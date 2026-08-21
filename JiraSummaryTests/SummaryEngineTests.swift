@@ -298,7 +298,9 @@ final class SummaryEngineTests: XCTestCase {
             period: .weekly
         )
 
-        XCTAssertEqual(summary.ticketsCreated, 2, "Both tickets created within weekly range")
+        // C-1 was created 2 days ago (within the 7-day weekly window); C-2 was
+        // created 10 days ago (outside it), so only C-1 counts.
+        XCTAssertEqual(summary.ticketsCreated, 1, "Only the ticket created within the weekly range counts")
     }
 
     // MARK: - Case Insensitive Status Matching
