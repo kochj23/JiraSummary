@@ -14,7 +14,7 @@ final class AIBackendTests: XCTestCase {
     // MARK: - AIBackend Enum
 
     func testAllBackendsCovered() {
-        XCTAssertEqual(AIBackend.allCases.count, 10, "Should have 10 AI backends")
+        XCTAssertEqual(AIBackend.allCases.count, 12, "Should have 12 AI backends (incl. OpenRouter + Nova Gateway)")
     }
 
     func testBackendRawValues() {
@@ -28,6 +28,8 @@ final class AIBackendTests: XCTestCase {
         XCTAssertEqual(AIBackend.azure.rawValue, "Azure")
         XCTAssertEqual(AIBackend.aws.rawValue, "AWS")
         XCTAssertEqual(AIBackend.ibmWatson.rawValue, "IBM Watson")
+        XCTAssertEqual(AIBackend.openRouter.rawValue, "OpenRouter")
+        XCTAssertEqual(AIBackend.novaGateway.rawValue, "Nova Gateway")
     }
 
     func testBackendIsLocal() {
@@ -36,12 +38,15 @@ final class AIBackendTests: XCTestCase {
         XCTAssertTrue(AIBackend.tinyLLM.isLocal)
         XCTAssertTrue(AIBackend.tinyChat.isLocal)
         XCTAssertTrue(AIBackend.openWebUI.isLocal)
+        // Nova Gateway runs on the local machine (127.0.0.1).
+        XCTAssertTrue(AIBackend.novaGateway.isLocal)
 
         XCTAssertFalse(AIBackend.openAI.isLocal)
         XCTAssertFalse(AIBackend.googleCloud.isLocal)
         XCTAssertFalse(AIBackend.azure.isLocal)
         XCTAssertFalse(AIBackend.aws.isLocal)
         XCTAssertFalse(AIBackend.ibmWatson.isLocal)
+        XCTAssertFalse(AIBackend.openRouter.isLocal)
     }
 
     func testBackendIconsAreNonEmpty() {

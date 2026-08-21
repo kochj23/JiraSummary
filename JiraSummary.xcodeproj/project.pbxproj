@@ -25,13 +25,17 @@
 		477ABCBFB0D93E8B6DBA426E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEBBF59DAEC3F9634ABBA2F /* SettingsView.swift */; };
 		4BE20A624CEB9403F7CB8545 /* AIBackendManager+Enhanced.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA07A1BE335CD6D74485ADDA /* AIBackendManager+Enhanced.swift */; };
 		4C759FF497F8BD70C3EFAE8C /* TicketActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924F9679092966C49BC35A6F /* TicketActivity.swift */; };
+		4DAB948A7B9512747F4F0045 /* LoadBalancerSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073F9F7961FCEB08AA754A9C /* LoadBalancerSupport.swift */; };
 		4E6B0FF9EB27AE745AD552FD /* MenuBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF40329E2CBB28326307540 /* MenuBarManager.swift */; };
+		4EA9380D42A0A8383133CAEC /* LoadBalancerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809590B27CB39CF8C31BF299 /* LoadBalancerTests.swift */; };
+		56068627271B2510AA8D6C8C /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847E2B83C95AE5E692A416D /* KeychainStore.swift */; };
 		678E9A68AF2194BB0ECB88B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3601B238FD7B05CA1BA449C3 /* Assets.xcassets */; };
 		6DE358832F034C6B81275479 /* TicketListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFF52366800E8D6147C793C /* TicketListView.swift */; };
 		702FD06CA85033E4ABC9D9FF /* AzureDevOpsModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2738E332DA0ED88655290EBB /* AzureDevOpsModelTests.swift */; };
 		7337023D2AA915A2FBB1F667 /* PersonSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AAE6841794FC18003FB637 /* PersonSummaryTests.swift */; };
 		74B1422C1C478C5B02752FF3 /* IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82333530313E9ADE5F6E3C4 /* IntegrationTests.swift */; };
 		7DF33EFC8F9ECDD4E369A628 /* SummaryEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C49EE123B41B87B7C3E6C9F /* SummaryEngine.swift */; };
+		8B21E318C09AD939CDDAF04A /* AIBackendManager+Balanced.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8DFF45449871A0CF3C8A9E /* AIBackendManager+Balanced.swift */; };
 		967E52BA4121C0A5DFB8BC24 /* AzureDevOpsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503B733842167E09960E15FA /* AzureDevOpsService.swift */; };
 		9836ADDA03A006D90F24B5CB /* PeopleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECC71A0DB7BD83F4CA7E3C /* PeopleListView.swift */; };
 		9896BEFDC4E55DDE94D5F984 /* AIBackendTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9954A8D4B9CCCE574FF007 /* AIBackendTests.swift */; };
@@ -47,6 +51,7 @@
 		B49C91CA70D1BFC6296C4787 /* DataFetchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F8D03091CCB6EA8B24BC62 /* DataFetchCoordinator.swift */; };
 		BB43CE8CAADBBFEB47D135D0 /* JiraModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE562975CA0678E18EED478 /* JiraModelTests.swift */; };
 		C19E06A059FD2CAEAD4FB603 /* JiraModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9173E04FAA00BB152CE13924 /* JiraModels.swift */; };
+		C95FD61A3D297F8076388F69 /* ModelRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA3C3825BE0AC91EB321D07 /* ModelRegistry.swift */; };
 		CCF58E1E861319D8C13A0040 /* AISummaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63972915C7F99BBB5C74E660 /* AISummaryService.swift */; };
 		D5A2930A6026A95ADFFF85ED /* SystemsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FA776D3E8F84C2CEBACEC4 /* SystemsListView.swift */; };
 		D73DF88DEB929EBEEA4C328A /* SystemConnectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D261F10B8C238FCF386775 /* SystemConnectionTests.swift */; };
@@ -56,6 +61,7 @@
 		F166E0BE50CBFB813F039D42 /* AzureDevOpsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530001E25E277F1B969D8C6 /* AzureDevOpsModels.swift */; };
 		F33B9A375B9C605294CC3540 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2146BC31690B2FE5DBCB5 /* KeychainService.swift */; };
 		F6C8EC7A40839CE7379A29E5 /* PersonDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBE9AEFFFBD956543080D4A /* PersonDetailView.swift */; };
+		F962789EEA0A8612E470D5AE /* OpenRouterProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF600CA9827CAF99D7AD4170 /* OpenRouterProvider.swift */; };
 		FB24F84B8C5F167B83CBD979 /* ModernDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D5886A997431FBE5BE4995 /* ModernDesign.swift */; };
 		FD271622149C64EE6EB310E2 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5474B20D5A99D1266C9BF5FD /* SidebarView.swift */; };
 /* End PBXBuildFile section */
@@ -71,6 +77,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		073F9F7961FCEB08AA754A9C /* LoadBalancerSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadBalancerSupport.swift; sourceTree = "<group>"; };
 		0C49EE123B41B87B7C3E6C9F /* SummaryEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryEngine.swift; sourceTree = "<group>"; };
 		132FE316E40E2C38FFCD5F13 /* AIBackendStatusMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIBackendStatusMenu.swift; sourceTree = "<group>"; };
 		1A4107E6D2A9A5189EAB2545 /* JiraServerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiraServerService.swift; sourceTree = "<group>"; };
@@ -83,12 +90,15 @@
 		3601B238FD7B05CA1BA449C3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		36CC49BC1C167CC5CD25BF08 /* ActivityTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTimelineView.swift; sourceTree = "<group>"; };
 		38A7B5737D0B76C737CAB38B /* JiraSummary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JiraSummary.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FA3C3825BE0AC91EB321D07 /* ModelRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelRegistry.swift; sourceTree = "<group>"; };
 		4385E3047C4018F34CCFAB14 /* TicketActivityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketActivityTests.swift; sourceTree = "<group>"; };
+		4847E2B83C95AE5E692A416D /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
 		4FC299CF35030605F29DF1B4 /* SecurityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityTests.swift; sourceTree = "<group>"; };
 		503B733842167E09960E15FA /* AzureDevOpsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AzureDevOpsService.swift; sourceTree = "<group>"; };
 		5474B20D5A99D1266C9BF5FD /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		56AAE6841794FC18003FB637 /* PersonSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonSummaryTests.swift; sourceTree = "<group>"; };
 		59E1609B1009D1CA8170B77A /* SprintDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintDataTests.swift; sourceTree = "<group>"; };
+		5A8DFF45449871A0CF3C8A9E /* AIBackendManager+Balanced.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AIBackendManager+Balanced.swift"; sourceTree = "<group>"; };
 		5AA9E7599987CB12F06DE592 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		5EBE9AEFFFBD956543080D4A /* PersonDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailView.swift; sourceTree = "<group>"; };
 		63972915C7F99BBB5C74E660 /* AISummaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AISummaryService.swift; sourceTree = "<group>"; };
@@ -98,6 +108,7 @@
 		73DE86BD8E553DC2CECEFE4F /* JiraSummaryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiraSummaryApp.swift; sourceTree = "<group>"; };
 		76D261F10B8C238FCF386775 /* SystemConnectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemConnectionTests.swift; sourceTree = "<group>"; };
 		79DC5A60880C8378D64E4A42 /* SprintData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintData.swift; sourceTree = "<group>"; };
+		809590B27CB39CF8C31BF299 /* LoadBalancerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadBalancerTests.swift; sourceTree = "<group>"; };
 		80F8D03091CCB6EA8B24BC62 /* DataFetchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataFetchCoordinator.swift; sourceTree = "<group>"; };
 		8377A9D197BB64C9CD2E9EB6 /* SSOAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSOAuthService.swift; sourceTree = "<group>"; };
 		8B032523828F3D8B8EC86C34 /* JiraCloudService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiraCloudService.swift; sourceTree = "<group>"; };
@@ -125,6 +136,7 @@
 		E3ECC71A0DB7BD83F4CA7E3C /* PeopleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleListView.swift; sourceTree = "<group>"; };
 		F0D5886A997431FBE5BE4995 /* ModernDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernDesign.swift; sourceTree = "<group>"; };
 		F591395AFF2D1783D481DB08 /* AIBackendManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIBackendManager.swift; sourceTree = "<group>"; };
+		FF600CA9827CAF99D7AD4170 /* OpenRouterProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenRouterProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -132,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				F591395AFF2D1783D481DB08 /* AIBackendManager.swift */,
+				5A8DFF45449871A0CF3C8A9E /* AIBackendManager+Balanced.swift */,
 				BA07A1BE335CD6D74485ADDA /* AIBackendManager+Enhanced.swift */,
 				AFEC311549AAB873121C8885 /* AIBackendManager+Generation.swift */,
 				63972915C7F99BBB5C74E660 /* AISummaryService.swift */,
@@ -141,7 +154,11 @@
 				8B032523828F3D8B8EC86C34 /* JiraCloudService.swift */,
 				1A4107E6D2A9A5189EAB2545 /* JiraServerService.swift */,
 				68C2146BC31690B2FE5DBCB5 /* KeychainService.swift */,
+				4847E2B83C95AE5E692A416D /* KeychainStore.swift */,
+				073F9F7961FCEB08AA754A9C /* LoadBalancerSupport.swift */,
 				DAF40329E2CBB28326307540 /* MenuBarManager.swift */,
+				3FA3C3825BE0AC91EB321D07 /* ModelRegistry.swift */,
+				FF600CA9827CAF99D7AD4170 /* OpenRouterProvider.swift */,
 				8377A9D197BB64C9CD2E9EB6 /* SSOAuthService.swift */,
 				0C49EE123B41B87B7C3E6C9F /* SummaryEngine.swift */,
 				6A927168667F2F2BAA3DF0EF /* WidgetDataSync.swift */,
@@ -170,6 +187,7 @@
 				2738E332DA0ED88655290EBB /* AzureDevOpsModelTests.swift */,
 				B82333530313E9ADE5F6E3C4 /* IntegrationTests.swift */,
 				DCE562975CA0678E18EED478 /* JiraModelTests.swift */,
+				809590B27CB39CF8C31BF299 /* LoadBalancerTests.swift */,
 				56AAE6841794FC18003FB637 /* PersonSummaryTests.swift */,
 				4FC299CF35030605F29DF1B4 /* SecurityTests.swift */,
 				59E1609B1009D1CA8170B77A /* SprintDataTests.swift */,
@@ -390,6 +408,7 @@
 				702FD06CA85033E4ABC9D9FF /* AzureDevOpsModelTests.swift in Sources */,
 				74B1422C1C478C5B02752FF3 /* IntegrationTests.swift in Sources */,
 				BB43CE8CAADBBFEB47D135D0 /* JiraModelTests.swift in Sources */,
+				4EA9380D42A0A8383133CAEC /* LoadBalancerTests.swift in Sources */,
 				7337023D2AA915A2FBB1F667 /* PersonSummaryTests.swift in Sources */,
 				A28BFED9FFC86C9089CF3C79 /* SecurityTests.swift in Sources */,
 				2C3E44F5A50FD20EE9B185DD /* SprintDataTests.swift in Sources */,
@@ -404,6 +423,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B21E318C09AD939CDDAF04A /* AIBackendManager+Balanced.swift in Sources */,
 				4BE20A624CEB9403F7CB8545 /* AIBackendManager+Enhanced.swift in Sources */,
 				1E845593E74BBA375E9B9F6E /* AIBackendManager+Generation.swift in Sources */,
 				9ABEE5A9058DF4C8E5EFF6DA /* AIBackendManager.swift in Sources */,
@@ -423,9 +443,13 @@
 				AADC0EBE06B2EB8918C3F8FB /* JiraServerService.swift in Sources */,
 				1425E26CBE309C8568E3B51F /* JiraSummaryApp.swift in Sources */,
 				F33B9A375B9C605294CC3540 /* KeychainService.swift in Sources */,
+				56068627271B2510AA8D6C8C /* KeychainStore.swift in Sources */,
+				4DAB948A7B9512747F4F0045 /* LoadBalancerSupport.swift in Sources */,
 				4E6B0FF9EB27AE745AD552FD /* MenuBarManager.swift in Sources */,
+				C95FD61A3D297F8076388F69 /* ModelRegistry.swift in Sources */,
 				FB24F84B8C5F167B83CBD979 /* ModernDesign.swift in Sources */,
 				9FAF856805EC1C0939F0EBC3 /* NovaAPIServer.swift in Sources */,
+				F962789EEA0A8612E470D5AE /* OpenRouterProvider.swift in Sources */,
 				9836ADDA03A006D90F24B5CB /* PeopleListView.swift in Sources */,
 				F6C8EC7A40839CE7379A29E5 /* PersonDetailView.swift in Sources */,
 				1E037F3BA0B73AA85E67C2D5 /* PersonSummary.swift in Sources */,
