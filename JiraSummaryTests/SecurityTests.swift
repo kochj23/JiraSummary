@@ -268,7 +268,12 @@ final class SecurityTests: XCTestCase {
                 .replacingOccurrences(of: "\"", with: "\\\"")
                 .replacingOccurrences(of: "'", with: "\\'")
 
-            XCTAssertFalse(escaped.contains("\" OR "), "JQL injection via double quote should be escaped")
+            // Every double quote must now be backslash-escaped. Removing the
+            // escaped `\"` sequences should leave no bare double quote behind.
+            // (The naive `escaped.contains("\" OR ")` check is wrong: escaping to
+            // `\"` still leaves the literal `" OR ` substring present.)
+            let withoutEscapedQuotes = escaped.replacingOccurrences(of: "\\\"", with: "")
+            XCTAssertFalse(withoutEscapedQuotes.contains("\""), "JQL injection via double quote should be escaped")
         }
     }
 
