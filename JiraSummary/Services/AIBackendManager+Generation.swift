@@ -45,6 +45,10 @@ extension AIBackendManager {
             result = try await generateOpenAI(prompt: prompt, systemPrompt: systemPrompt, temperature: temp, maxTokens: tokens)
         case .mlx:
             result = try await generateMLX(prompt: prompt, maxTokens: tokens)
+        case .openRouter:
+            result = try await generateOpenRouter(prompt: prompt, systemPrompt: systemPrompt, temperature: temp, maxTokens: tokens)
+        case .novaGateway:
+            result = try await generateNovaGateway(prompt: prompt, systemPrompt: systemPrompt, temperature: temp, maxTokens: tokens)
         case .googleCloud, .azure, .aws, .ibmWatson:
             throw AIGenerationError.backendNotImplemented(target.rawValue)
         }
@@ -64,6 +68,20 @@ extension AIBackendManager {
         temperature: Double? = nil,
         maxTokens: Int? = nil
     ) async throws -> String {
+        // Load-balanced mode: when any balancing toggle is on, fan the summary out
+        // across the enabled pool (all local models / all frontier / Nova Gateway).
+        // Falls through to the single-backend priority path when the pool is
+        // empty or unreachable.
+        if isBalancingEnabled {
+            do {
+                if let balanced = try await generateBalanced(prompt: prompt, systemPrompt: systemPrompt, temperature: temperature, maxTokens: maxTokens) {
+                    return balanced
+                }
+            } catch {
+                logger.warning("Balanced dispatch failed, falling back: \(error.localizedDescription)")
+            }
+        }
+
         // Priority order: Ollama → OpenAI → TinyChat → TinyLLM → OpenWebUI → MLX
         let priority: [AIBackend] = [.ollama, .openAI, .tinyChat, .tinyLLM, .openWebUI, .mlx]
 
@@ -263,7 +281,7 @@ extension AIBackendManager {
 
     // MARK: - MLX
 
-    private func generateMLX(prompt: String, maxTokens: Int) async throws -> String {
+    func generateMLX(prompt: String, maxTokens: Int) async throws -> String {
         let mlxPath = FileManager.default.fileExists(atPath: "/opt/homebrew/bin/mlx_lm")
             ? "/opt/homebrew/bin/mlx_lm"
             : "/usr/local/bin/mlx_lm"

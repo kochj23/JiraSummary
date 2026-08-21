@@ -13,6 +13,7 @@ struct SettingsView: View {
     @State private var refreshInterval: Double = 30
     @State private var enableMenuBar = false
     @State private var defaultPeriod: SummaryPeriod = .weekly
+    @State private var openRouterKeyInput = ""
 
     private var aiManager = AIBackendManager.shared
     private let menuBarManager = MenuBarManager.shared
@@ -28,6 +29,7 @@ struct SettingsView: View {
                 aiBackendSection
                 aiLocalBackendsSection
                 aiCloudBackendsSection
+                aiLoadBalancerSection
                 aiParametersSection
                 aiUsageSection
                 aboutSection
@@ -297,6 +299,93 @@ struct SettingsView: View {
                 }
             }
         }
+    }
+
+    // MARK: - Shared Multi-Model Load Balancer
+
+    private var aiLoadBalancerSection: some View {
+        Group {
+            if aiManager.isEnabled {
+                settingsSection("Load Balancer") {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Fan summary generation out across multiple models. When any toggle is on, requests are spread over the healthy pool via least-busy balancing.")
+                            .font(.system(size: 11, design: .rounded))
+                            .foregroundColor(ModernColors.textTertiary)
+
+                        Toggle(isOn: Bindable(aiManager).useAllLocalModels) {
+                            Text("Balance across all local models")
+                                .font(.system(size: 13, design: .rounded))
+                                .foregroundColor(ModernColors.textPrimary)
+                        }
+                        .toggleStyle(.switch)
+                        .onChange(of: aiManager.useAllLocalModels) { _, _ in aiManager.saveConfiguration() }
+
+                        Toggle(isOn: Bindable(aiManager).enableAllFrontierModels) {
+                            Text("Balance across all frontier models (OpenRouter)")
+                                .font(.system(size: 13, design: .rounded))
+                                .foregroundColor(ModernColors.textPrimary)
+                        }
+                        .toggleStyle(.switch)
+                        .onChange(of: aiManager.enableAllFrontierModels) { _, _ in aiManager.saveConfiguration() }
+
+                        Toggle(isOn: Bindable(aiManager).useNovaGateway) {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Include Nova Gateway")
+                                    .font(.system(size: 13, design: .rounded))
+                                    .foregroundColor(ModernColors.textPrimary)
+                                Text("Optional — dropped from the pool if the health check fails")
+                                    .font(.system(size: 10, design: .rounded))
+                                    .foregroundColor(ModernColors.textTertiary)
+                            }
+                        }
+                        .toggleStyle(.switch)
+                        .onChange(of: aiManager.useNovaGateway) { _, _ in aiManager.saveConfiguration() }
+
+                        Divider().opacity(0.3)
+
+                        // OpenRouter API key (single Keychain-backed key)
+                        HStack {
+                            Text("OpenRouter Key")
+                                .font(.system(size: 12, design: .rounded))
+                                .foregroundColor(ModernColors.textSecondary)
+                                .frame(width: 110, alignment: .trailing)
+                            SecureField(aiManager.hasOpenRouterKey ? "•••••• (stored)" : "sk-or-...", text: $openRouterKeyInput)
+                                .textFieldStyle(.roundedBorder)
+                                .font(.system(size: 12, design: .monospaced))
+                                .onSubmit { commitOpenRouterKey() }
+                            Button("Save") { commitOpenRouterKey() }
+                                .buttonStyle(.borderless)
+                            statusDot(aiManager.isOpenRouterAvailable)
+                        }
+
+                        // Nova Gateway URL
+                        HStack {
+                            Text("Nova Gateway")
+                                .font(.system(size: 12, design: .rounded))
+                                .foregroundColor(ModernColors.textSecondary)
+                                .frame(width: 110, alignment: .trailing)
+                            TextField(ModelRegistry.novaGatewayDefaultURL, text: Bindable(aiManager).novaGatewayURL)
+                                .textFieldStyle(.roundedBorder)
+                                .font(.system(size: 12, design: .monospaced))
+                                .onChange(of: aiManager.novaGatewayURL) { _, _ in aiManager.saveConfiguration() }
+                            statusDot(aiManager.isNovaGatewayAvailable)
+                        }
+
+                        Text("The OpenRouter key is stored in the macOS Keychain, never in UserDefaults.")
+                            .font(.system(size: 10, design: .rounded))
+                            .foregroundColor(ModernColors.textTertiary)
+                            .padding(.top, 4)
+                    }
+                }
+            }
+        }
+    }
+
+    private func commitOpenRouterKey() {
+        guard !openRouterKeyInput.isEmpty else { return }
+        aiManager.setOpenRouterAPIKey(openRouterKeyInput)
+        openRouterKeyInput = ""
+        Task { await aiManager.refreshAllBackends() }
     }
 
     // MARK: - AI Generation Parameters

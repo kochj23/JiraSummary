@@ -39,6 +39,10 @@ targets:
       properties:
         com.apple.security.app-sandbox: false
         com.apple.security.network.client: true
+    scheme:
+      testTargets:
+        - JiraSummaryTests
+      gatherCoverageData: false
 
   JiraSummaryTests:
     type: bundle.unit-test

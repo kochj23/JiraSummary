@@ -362,7 +362,11 @@ final class IntegrationTests: XCTestCase {
 
         let response = try decoder.decode(JiraSprintResponse.self, from: json)
         let systemId = UUID()
+        // Jira sprint dates carry fractional seconds ("...000Z"), which the
+        // default ISO8601DateFormatter does not parse — enable that option so
+        // startDate/endDate decode instead of coming back nil.
         let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
 
         // Convert (same logic as DataFetchCoordinator.convertJiraSprint)
         let sprintDataList = response.values.map { sprint -> SprintData in
