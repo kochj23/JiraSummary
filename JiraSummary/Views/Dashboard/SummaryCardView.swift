@@ -68,11 +68,18 @@ struct SummaryCardView: View {
 
             // AI Summary
             if let aiSummary = summary.aiSummary {
-                Text(aiSummary)
-                    .font(.system(size: 12, design: .rounded))
-                    .foregroundColor(ModernColors.textSecondary)
-                    .lineLimit(3)
-                    .padding(.top, 4)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(aiSummary)
+                        .font(.system(size: 12, design: .rounded))
+                        .foregroundColor(ModernColors.textSecondary)
+                        .lineLimit(3)
+                    if let source = summary.aiSummarySource {
+                        Text(source)
+                            .font(.system(size: 10, design: .rounded))
+                            .foregroundColor(ModernColors.textTertiary)
+                    }
+                }
+                .padding(.top, 4)
             }
 
             // Recent ticket previews

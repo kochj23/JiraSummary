@@ -426,14 +426,13 @@ final class IntegrationTests: XCTestCase {
         activity.updatedDate = Date()
         summary.recentTickets = [activity]
 
-        // The prompt should contain person name, system, period, counts, sprint info
-        // We verify the PersonSummary data that feeds the prompt
-        XCTAssertEqual(summary.personName, "Prompt Test")
-        XCTAssertEqual(summary.systemName, "Jira Cloud")
-        XCTAssertEqual(summary.period.rawValue, "Weekly")
-        XCTAssertEqual(summary.totalTickets, 10)
-        XCTAssertEqual(summary.sprintName, "Sprint 22")
-        XCTAssertFalse(summary.recentTickets.isEmpty)
+        // The prompt carries person name, system, period, counts, sprint info and recent tickets
+        let prompt = AISummaryService.buildPrompt(from: summary)
+        for fragment in ["Person: Prompt Test", "System: Jira Cloud", "Period: Weekly", "Total tickets touched: 10",
+                         "Completed: 5", "In progress: 3", "Blocked: 1", "Created: 4", "Sprint: Sprint 22",
+                         "Points committed: 20, completed: 12", "- PROMPT-1: Test ticket for prompt [Done]"] {
+            XCTAssertTrue(prompt.contains(fragment), "prompt is missing: \(fragment)")
+        }
     }
 
     // MARK: - Malformed JSON Handling

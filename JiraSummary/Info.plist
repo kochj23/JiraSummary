@@ -2,19 +2,21 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleName</key>
-    <string>JiraSummary</string>
-    <key>CFBundleDisplayName</key>
-    <string>Jira Summary</string>
-    <key>CFBundleIdentifier</key>
-    <string>com.jordankoch.JiraSummary</string>
-    <key>CFBundleShortVersionString</key>
-    <string>1.2.0</string>
-    <key>CFBundleVersion</key>
-    <string>1</string>
-    <key>LSMinimumSystemVersion</key>
-    <string>14.0</string>
-    <key>NSAppTransportSecurity</key>
-    <dict/>
+	<key>CFBundleDisplayName</key>
+	<string>Jira Summary</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.jordankoch.JiraSummary</string>
+	<key>CFBundleName</key>
+	<string>JiraSummary</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.productivity</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>14.0</string>
+	<key>NSAppTransportSecurity</key>
+	<dict/>
 </dict>
 </plist>

@@ -8,6 +8,7 @@
 //
 
 import XCTest
+import NovaAIKit
 @testable import JiraSummary
 
 final class SecurityTests: XCTestCase {
@@ -155,19 +156,15 @@ final class SecurityTests: XCTestCase {
         }
     }
 
-    func testAIGenerationErrorDescriptionsAreSafe() {
-        let errors: [AIGenerationError] = [
-            .noBackendAvailable,
-            .invalidURL,
-            .invalidResponse,
-            .httpError(401),
-            .noResponse,
-            .backendNotImplemented("TestBackend"),
-            .allBackendsFailed
+    func testAIErrorDescriptionsAreSafe() {
+        let errors: [NovaAIError] = [
+            .disabled, .noBackendAvailable, .invalidURL("http://example.invalid"), .insecureTransport("example.invalid"),
+            .missingKey(.openAI), .httpStatus(401), .emptyResponse, .badResponse, .timedOut,
+            .validationFailed("too short"), .allBackendsFailed("offline"),
         ]
-
         for error in errors {
             let description = error.errorDescription ?? ""
+            XCTAssertFalse(description.isEmpty)
             XCTAssertFalse(description.contains("sk-"), "AI error should not contain API keys")
             XCTAssertFalse(description.contains("Bearer"), "AI error should not contain auth headers")
         }
@@ -190,24 +187,21 @@ final class SecurityTests: XCTestCase {
         }
     }
 
-    // MARK: - AI Backend Enum Security
+    // MARK: - AI Backend Security (NovaAIKit)
 
-    func testLocalBackendsDoNotRequireAPIKeys() {
-        let localBackends: [AIBackend] = [.ollama, .mlx, .tinyLLM, .tinyChat, .openWebUI]
-        for backend in localBackends {
-            XCTAssertTrue(backend.isLocal, "\(backend.rawValue) should be marked as local")
-        }
+    func testOnlyCloudBackendsRequireAPIKeys() {
+        let keyed = NovaAIBackend.allCases.filter(\.requiresKey)
+        XCTAssertEqual(Set(keyed), [.openRouter, .openAI], "Only cloud backends need a key")
     }
 
-    func testCloudBackendsAreNotLocal() {
-        let cloudBackends: [AIBackend] = [.openAI, .googleCloud, .azure, .aws, .ibmWatson]
-        for backend in cloudBackends {
-            XCTAssertFalse(backend.isLocal, "\(backend.rawValue) should not be marked as local")
+    func testCloudBackendDefaultURLsAreHTTPS() {
+        for backend in NovaAIBackend.allCases where backend.requiresKey {
+            XCTAssertTrue(backend.defaultURL.hasPrefix("https://"), "\(backend.rawValue) must default to https")
         }
     }
 
     func testLocalBackendDefaultURLsAreLocalhost() {
-        let localBackends: [AIBackend] = [.ollama, .tinyLLM, .tinyChat, .openWebUI]
+        let localBackends: [NovaAIBackend] = [.ollama, .mlx, .tinyLLM, .tinyChat, .openWebUI, .novaGateway]
         for backend in localBackends {
             let url = backend.defaultURL
             XCTAssertTrue(url.contains("localhost") || url.contains("127.0.0.1"),
@@ -215,22 +209,12 @@ final class SecurityTests: XCTestCase {
         }
     }
 
-    // MARK: - Cost Estimation Safety
-
-    func testLocalBackendsCostZero() {
-        let localBackends: [AIBackend] = [.ollama, .mlx, .tinyLLM, .tinyChat, .openWebUI]
-        for backend in localBackends {
-            let cost = UsageStats.estimatedCostPerRequest(backend: backend, tokens: 1000)
-            XCTAssertEqual(cost, 0, "Local backend \(backend.rawValue) should have zero cost")
+    func testRemovedCloudBackendsAreGone() {
+        let ids = Set(NovaAIBackend.allCases.map(\.rawValue))
+        for removed in ["google", "googlecloud", "azure", "aws", "ibmwatson"] {
+            XCTAssertFalse(ids.contains(removed), "\(removed) backend was dropped in the NovaAIKit migration")
         }
-    }
-
-    func testCloudBackendsCostPositive() {
-        let cloudBackends: [AIBackend] = [.openAI, .googleCloud, .azure, .aws, .ibmWatson]
-        for backend in cloudBackends {
-            let cost = UsageStats.estimatedCostPerRequest(backend: backend, tokens: 1000)
-            XCTAssertGreaterThan(cost, 0, "Cloud backend \(backend.rawValue) should have positive cost")
-        }
+        XCTAssertEqual(NovaAIBackend.allCases.count, 9)
     }
 
     // MARK: - AuthCredential Encoding Safety

@@ -10,11 +10,12 @@
 		00CEBA1CE6648395F0E5DEA6 /* TrackedPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A3A2F1105D078BD659921E /* TrackedPerson.swift */; };
 		020F7DE94768519BC8A44F7E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA9E7599987CB12F06DE592 /* ContentView.swift */; };
 		03A0095283592DB9CD5E65E8 /* SummaryCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C740FEAA78C32C9FE136C6DD /* SummaryCardView.swift */; };
+		0B14AF3CAF258F860EC610FB /* AIKitAdoptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FF519906F9582E7960127D /* AIKitAdoptionTests.swift */; };
 		0D8050E9B82D0187FCAF9DCD /* SystemConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A72FD91C9639803F55520F /* SystemConnection.swift */; };
 		13BB3BAAF240D1C5FD901ADB /* SSOAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8377A9D197BB64C9CD2E9EB6 /* SSOAuthService.swift */; };
 		1425E26CBE309C8568E3B51F /* JiraSummaryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DE86BD8E553DC2CECEFE4F /* JiraSummaryApp.swift */; };
 		1E037F3BA0B73AA85E67C2D5 /* PersonSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C2A9FF5DB2AAABC873A817 /* PersonSummary.swift */; };
-		1E845593E74BBA375E9B9F6E /* AIBackendManager+Generation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFEC311549AAB873121C8885 /* AIBackendManager+Generation.swift */; };
+		20940D8385E544BABB62B4C1 /* NovaAIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9902EA5AF4C6D545078E6BA6 /* NovaAIKit */; };
 		273E73F8CBDC62A71AC42DD9 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22C423047962F8C75F06A94 /* DashboardView.swift */; };
 		2A62967BB93A0F5E9A7121CC /* SprintData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79DC5A60880C8378D64E4A42 /* SprintData.swift */; };
 		2C3E44F5A50FD20EE9B185DD /* SprintDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E1609B1009D1CA8170B77A /* SprintDataTests.swift */; };
@@ -23,45 +24,37 @@
 		43223BD142ADCDAD84CE4F6F /* ActivityTimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CC49BC1C167CC5CD25BF08 /* ActivityTimelineView.swift */; };
 		45BA9DB155E6D72B145FA2E7 /* SummaryEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB9767CBC65EFAA08763C22 /* SummaryEngineTests.swift */; };
 		477ABCBFB0D93E8B6DBA426E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEBBF59DAEC3F9634ABBA2F /* SettingsView.swift */; };
-		4BE20A624CEB9403F7CB8545 /* AIBackendManager+Enhanced.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA07A1BE335CD6D74485ADDA /* AIBackendManager+Enhanced.swift */; };
 		4C759FF497F8BD70C3EFAE8C /* TicketActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924F9679092966C49BC35A6F /* TicketActivity.swift */; };
-		4DAB948A7B9512747F4F0045 /* LoadBalancerSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073F9F7961FCEB08AA754A9C /* LoadBalancerSupport.swift */; };
 		4E6B0FF9EB27AE745AD552FD /* MenuBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF40329E2CBB28326307540 /* MenuBarManager.swift */; };
-		4EA9380D42A0A8383133CAEC /* LoadBalancerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809590B27CB39CF8C31BF299 /* LoadBalancerTests.swift */; };
-		56068627271B2510AA8D6C8C /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4847E2B83C95AE5E692A416D /* KeychainStore.swift */; };
 		678E9A68AF2194BB0ECB88B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3601B238FD7B05CA1BA449C3 /* Assets.xcassets */; };
 		6DE358832F034C6B81275479 /* TicketListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFF52366800E8D6147C793C /* TicketListView.swift */; };
 		702FD06CA85033E4ABC9D9FF /* AzureDevOpsModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2738E332DA0ED88655290EBB /* AzureDevOpsModelTests.swift */; };
 		7337023D2AA915A2FBB1F667 /* PersonSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AAE6841794FC18003FB637 /* PersonSummaryTests.swift */; };
+		7368E355F4A0EF4FC35C6BEF /* AppAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D600CE6C56EA613EC372022 /* AppAI.swift */; };
 		74B1422C1C478C5B02752FF3 /* IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82333530313E9ADE5F6E3C4 /* IntegrationTests.swift */; };
 		7DF33EFC8F9ECDD4E369A628 /* SummaryEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C49EE123B41B87B7C3E6C9F /* SummaryEngine.swift */; };
-		8B21E318C09AD939CDDAF04A /* AIBackendManager+Balanced.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8DFF45449871A0CF3C8A9E /* AIBackendManager+Balanced.swift */; };
 		967E52BA4121C0A5DFB8BC24 /* AzureDevOpsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503B733842167E09960E15FA /* AzureDevOpsService.swift */; };
 		9836ADDA03A006D90F24B5CB /* PeopleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ECC71A0DB7BD83F4CA7E3C /* PeopleListView.swift */; };
-		9896BEFDC4E55DDE94D5F984 /* AIBackendTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9954A8D4B9CCCE574FF007 /* AIBackendTests.swift */; };
-		9ABEE5A9058DF4C8E5EFF6DA /* AIBackendManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F591395AFF2D1783D481DB08 /* AIBackendManager.swift */; };
 		9FAF856805EC1C0939F0EBC3 /* NovaAPIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A207FE6028EDCE2F317E27D7 /* NovaAPIServer.swift */; };
 		A248CD7AEEF79AC78A9D748F /* SSOWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C68E639237390DD679685A /* SSOWebView.swift */; };
 		A28BFED9FFC86C9089CF3C79 /* SecurityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC299CF35030605F29DF1B4 /* SecurityTests.swift */; };
 		AADC0EBE06B2EB8918C3F8FB /* JiraServerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4107E6D2A9A5189EAB2545 /* JiraServerService.swift */; };
 		AB34C4537823AA5AD0795EE2 /* WidgetDataSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A927168667F2F2BAA3DF0EF /* WidgetDataSync.swift */; };
 		AB464EC964E0DB949CF24DA2 /* AddSystemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EBB1A3087F7C326347EF096 /* AddSystemView.swift */; };
-		ABD625B6AB4C084F3B573704 /* AIBackendStatusMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132FE316E40E2C38FFCD5F13 /* AIBackendStatusMenu.swift */; };
 		ACF1B08785D2F2E26716A696 /* TicketActivityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4385E3047C4018F34CCFAB14 /* TicketActivityTests.swift */; };
 		B49C91CA70D1BFC6296C4787 /* DataFetchCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F8D03091CCB6EA8B24BC62 /* DataFetchCoordinator.swift */; };
 		BB43CE8CAADBBFEB47D135D0 /* JiraModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCE562975CA0678E18EED478 /* JiraModelTests.swift */; };
 		C19E06A059FD2CAEAD4FB603 /* JiraModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9173E04FAA00BB152CE13924 /* JiraModels.swift */; };
-		C95FD61A3D297F8076388F69 /* ModelRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA3C3825BE0AC91EB321D07 /* ModelRegistry.swift */; };
 		CCF58E1E861319D8C13A0040 /* AISummaryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63972915C7F99BBB5C74E660 /* AISummaryService.swift */; };
 		D5A2930A6026A95ADFFF85ED /* SystemsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FA776D3E8F84C2CEBACEC4 /* SystemsListView.swift */; };
 		D73DF88DEB929EBEEA4C328A /* SystemConnectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D261F10B8C238FCF386775 /* SystemConnectionTests.swift */; };
 		D8952A63D3777C1E03A3E4FF /* TrackedPersonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C297497D2A2E878F10B832 /* TrackedPersonTests.swift */; };
 		DE42298C17C44C7C81318412 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2EACCC9E871F5D7441848F /* DataStore.swift */; };
+		E384C145B9251984DD12D28F /* NovaAIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6ADC0D578F3A2D8F56B68C0A /* NovaAIKit */; };
 		F09F10951B0AE095CA6F4AE3 /* SprintVelocityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E068DC8539529A4BFA6F61F /* SprintVelocityView.swift */; };
 		F166E0BE50CBFB813F039D42 /* AzureDevOpsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530001E25E277F1B969D8C6 /* AzureDevOpsModels.swift */; };
 		F33B9A375B9C605294CC3540 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C2146BC31690B2FE5DBCB5 /* KeychainService.swift */; };
 		F6C8EC7A40839CE7379A29E5 /* PersonDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EBE9AEFFFBD956543080D4A /* PersonDetailView.swift */; };
-		F962789EEA0A8612E470D5AE /* OpenRouterProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF600CA9827CAF99D7AD4170 /* OpenRouterProvider.swift */; };
 		FB24F84B8C5F167B83CBD979 /* ModernDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D5886A997431FBE5BE4995 /* ModernDesign.swift */; };
 		FD271622149C64EE6EB310E2 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5474B20D5A99D1266C9BF5FD /* SidebarView.swift */; };
 /* End PBXBuildFile section */
@@ -77,28 +70,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		073F9F7961FCEB08AA754A9C /* LoadBalancerSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadBalancerSupport.swift; sourceTree = "<group>"; };
 		0C49EE123B41B87B7C3E6C9F /* SummaryEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryEngine.swift; sourceTree = "<group>"; };
-		132FE316E40E2C38FFCD5F13 /* AIBackendStatusMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIBackendStatusMenu.swift; sourceTree = "<group>"; };
 		1A4107E6D2A9A5189EAB2545 /* JiraServerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiraServerService.swift; sourceTree = "<group>"; };
 		1DB9767CBC65EFAA08763C22 /* SummaryEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryEngineTests.swift; sourceTree = "<group>"; };
 		24C297497D2A2E878F10B832 /* TrackedPersonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackedPersonTests.swift; sourceTree = "<group>"; };
 		2738E332DA0ED88655290EBB /* AzureDevOpsModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AzureDevOpsModelTests.swift; sourceTree = "<group>"; };
-		2D9954A8D4B9CCCE574FF007 /* AIBackendTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIBackendTests.swift; sourceTree = "<group>"; };
 		2EBB1A3087F7C326347EF096 /* AddSystemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSystemView.swift; sourceTree = "<group>"; };
 		3470DDE57D36266FD1D45E29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3601B238FD7B05CA1BA449C3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		36CC49BC1C167CC5CD25BF08 /* ActivityTimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTimelineView.swift; sourceTree = "<group>"; };
 		38A7B5737D0B76C737CAB38B /* JiraSummary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JiraSummary.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3FA3C3825BE0AC91EB321D07 /* ModelRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelRegistry.swift; sourceTree = "<group>"; };
 		4385E3047C4018F34CCFAB14 /* TicketActivityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketActivityTests.swift; sourceTree = "<group>"; };
-		4847E2B83C95AE5E692A416D /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
 		4FC299CF35030605F29DF1B4 /* SecurityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityTests.swift; sourceTree = "<group>"; };
 		503B733842167E09960E15FA /* AzureDevOpsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AzureDevOpsService.swift; sourceTree = "<group>"; };
 		5474B20D5A99D1266C9BF5FD /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		56AAE6841794FC18003FB637 /* PersonSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonSummaryTests.swift; sourceTree = "<group>"; };
 		59E1609B1009D1CA8170B77A /* SprintDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintDataTests.swift; sourceTree = "<group>"; };
-		5A8DFF45449871A0CF3C8A9E /* AIBackendManager+Balanced.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AIBackendManager+Balanced.swift"; sourceTree = "<group>"; };
 		5AA9E7599987CB12F06DE592 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		5EBE9AEFFFBD956543080D4A /* PersonDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonDetailView.swift; sourceTree = "<group>"; };
 		63972915C7F99BBB5C74E660 /* AISummaryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AISummaryService.swift; sourceTree = "<group>"; };
@@ -108,7 +95,6 @@
 		73DE86BD8E553DC2CECEFE4F /* JiraSummaryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiraSummaryApp.swift; sourceTree = "<group>"; };
 		76D261F10B8C238FCF386775 /* SystemConnectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemConnectionTests.swift; sourceTree = "<group>"; };
 		79DC5A60880C8378D64E4A42 /* SprintData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintData.swift; sourceTree = "<group>"; };
-		809590B27CB39CF8C31BF299 /* LoadBalancerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadBalancerTests.swift; sourceTree = "<group>"; };
 		80F8D03091CCB6EA8B24BC62 /* DataFetchCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataFetchCoordinator.swift; sourceTree = "<group>"; };
 		8377A9D197BB64C9CD2E9EB6 /* SSOAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSOAuthService.swift; sourceTree = "<group>"; };
 		8B032523828F3D8B8EC86C34 /* JiraCloudService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiraCloudService.swift; sourceTree = "<group>"; };
@@ -116,13 +102,12 @@
 		901FE99398A55084B41EDEAC /* AddPersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPersonView.swift; sourceTree = "<group>"; };
 		9173E04FAA00BB152CE13924 /* JiraModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiraModels.swift; sourceTree = "<group>"; };
 		924F9679092966C49BC35A6F /* TicketActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketActivity.swift; sourceTree = "<group>"; };
+		9D600CE6C56EA613EC372022 /* AppAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAI.swift; sourceTree = "<group>"; };
 		9FEBBF59DAEC3F9634ABBA2F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A207FE6028EDCE2F317E27D7 /* NovaAPIServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NovaAPIServer.swift; sourceTree = "<group>"; };
 		A22C423047962F8C75F06A94 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		A530001E25E277F1B969D8C6 /* AzureDevOpsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AzureDevOpsModels.swift; sourceTree = "<group>"; };
-		AFEC311549AAB873121C8885 /* AIBackendManager+Generation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AIBackendManager+Generation.swift"; sourceTree = "<group>"; };
 		B82333530313E9ADE5F6E3C4 /* IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationTests.swift; sourceTree = "<group>"; };
-		BA07A1BE335CD6D74485ADDA /* AIBackendManager+Enhanced.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AIBackendManager+Enhanced.swift"; sourceTree = "<group>"; };
 		BD483C0F5C219A4D2D20C402 /* JiraSummaryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JiraSummaryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4C2A9FF5DB2AAABC873A817 /* PersonSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonSummary.swift; sourceTree = "<group>"; };
 		C6A3A2F1105D078BD659921E /* TrackedPerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackedPerson.swift; sourceTree = "<group>"; };
@@ -134,19 +119,33 @@
 		DAF40329E2CBB28326307540 /* MenuBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarManager.swift; sourceTree = "<group>"; };
 		DCE562975CA0678E18EED478 /* JiraModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiraModelTests.swift; sourceTree = "<group>"; };
 		E3ECC71A0DB7BD83F4CA7E3C /* PeopleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleListView.swift; sourceTree = "<group>"; };
+		E4FF519906F9582E7960127D /* AIKitAdoptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIKitAdoptionTests.swift; sourceTree = "<group>"; };
 		F0D5886A997431FBE5BE4995 /* ModernDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernDesign.swift; sourceTree = "<group>"; };
-		F591395AFF2D1783D481DB08 /* AIBackendManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIBackendManager.swift; sourceTree = "<group>"; };
-		FF600CA9827CAF99D7AD4170 /* OpenRouterProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenRouterProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2EF78A390B1BE42368514B1A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20940D8385E544BABB62B4C1 /* NovaAIKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F735AB3D7BD6BB0F639F93F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E384C145B9251984DD12D28F /* NovaAIKit in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		0BB029A5ADC33F3BE2D4F200 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				F591395AFF2D1783D481DB08 /* AIBackendManager.swift */,
-				5A8DFF45449871A0CF3C8A9E /* AIBackendManager+Balanced.swift */,
-				BA07A1BE335CD6D74485ADDA /* AIBackendManager+Enhanced.swift */,
-				AFEC311549AAB873121C8885 /* AIBackendManager+Generation.swift */,
 				63972915C7F99BBB5C74E660 /* AISummaryService.swift */,
 				503B733842167E09960E15FA /* AzureDevOpsService.swift */,
 				80F8D03091CCB6EA8B24BC62 /* DataFetchCoordinator.swift */,
@@ -154,11 +153,7 @@
 				8B032523828F3D8B8EC86C34 /* JiraCloudService.swift */,
 				1A4107E6D2A9A5189EAB2545 /* JiraServerService.swift */,
 				68C2146BC31690B2FE5DBCB5 /* KeychainService.swift */,
-				4847E2B83C95AE5E692A416D /* KeychainStore.swift */,
-				073F9F7961FCEB08AA754A9C /* LoadBalancerSupport.swift */,
 				DAF40329E2CBB28326307540 /* MenuBarManager.swift */,
-				3FA3C3825BE0AC91EB321D07 /* ModelRegistry.swift */,
-				FF600CA9827CAF99D7AD4170 /* OpenRouterProvider.swift */,
 				8377A9D197BB64C9CD2E9EB6 /* SSOAuthService.swift */,
 				0C49EE123B41B87B7C3E6C9F /* SummaryEngine.swift */,
 				6A927168667F2F2BAA3DF0EF /* WidgetDataSync.swift */,
@@ -183,11 +178,10 @@
 		78DFEFBC0190D0AB4CA046F8 /* JiraSummaryTests */ = {
 			isa = PBXGroup;
 			children = (
-				2D9954A8D4B9CCCE574FF007 /* AIBackendTests.swift */,
+				E4FF519906F9582E7960127D /* AIKitAdoptionTests.swift */,
 				2738E332DA0ED88655290EBB /* AzureDevOpsModelTests.swift */,
 				B82333530313E9ADE5F6E3C4 /* IntegrationTests.swift */,
 				DCE562975CA0678E18EED478 /* JiraModelTests.swift */,
-				809590B27CB39CF8C31BF299 /* LoadBalancerTests.swift */,
 				56AAE6841794FC18003FB637 /* PersonSummaryTests.swift */,
 				4FC299CF35030605F29DF1B4 /* SecurityTests.swift */,
 				59E1609B1009D1CA8170B77A /* SprintDataTests.swift */,
@@ -276,12 +270,21 @@
 				3470DDE57D36266FD1D45E29 /* Info.plist */,
 				73DE86BD8E553DC2CECEFE4F /* JiraSummaryApp.swift */,
 				A207FE6028EDCE2F317E27D7 /* NovaAPIServer.swift */,
+				E50264069920C89B866BDA9E /* AI */,
 				EA281207A32C017454E00185 /* Design */,
 				423C2F6901DA5AFE448EF383 /* Models */,
 				0BB029A5ADC33F3BE2D4F200 /* Services */,
 				C18F9029CD3B17DD65E159E1 /* Views */,
 			);
 			path = JiraSummary;
+			sourceTree = "<group>";
+		};
+		E50264069920C89B866BDA9E /* AI */ = {
+			isa = PBXGroup;
+			children = (
+				9D600CE6C56EA613EC372022 /* AppAI.swift */,
+			);
+			path = AI;
 			sourceTree = "<group>";
 		};
 		EA281207A32C017454E00185 /* Design */ = {
@@ -295,7 +298,6 @@
 		ECA99F34115807A5453E72C6 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				132FE316E40E2C38FFCD5F13 /* AIBackendStatusMenu.swift */,
 				9FEBBF59DAEC3F9634ABBA2F /* SettingsView.swift */,
 			);
 			path = Settings;
@@ -319,6 +321,7 @@
 			buildPhases = (
 				31D10DCD672FBD052EE888F9 /* Sources */,
 				23170D004731DFC1BE8EC65E /* Resources */,
+				2EF78A390B1BE42368514B1A /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -326,6 +329,7 @@
 			);
 			name = JiraSummary;
 			packageProductDependencies = (
+				9902EA5AF4C6D545078E6BA6 /* NovaAIKit */,
 			);
 			productName = JiraSummary;
 			productReference = 38A7B5737D0B76C737CAB38B /* JiraSummary.app */;
@@ -336,6 +340,7 @@
 			buildConfigurationList = E9BF3E5A0B6F0B94019B1885 /* Build configuration list for PBXNativeTarget "JiraSummaryTests" */;
 			buildPhases = (
 				1BB7AE613A9C0222496026A5 /* Sources */,
+				F735AB3D7BD6BB0F639F93F1 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -344,6 +349,7 @@
 			);
 			name = JiraSummaryTests;
 			packageProductDependencies = (
+				6ADC0D578F3A2D8F56B68C0A /* NovaAIKit */,
 			);
 			productName = JiraSummaryTests;
 			productReference = BD483C0F5C219A4D2D20C402 /* JiraSummaryTests.xctest */;
@@ -377,6 +383,9 @@
 			);
 			mainGroup = EE20CECB2E5DD03844EFC5A2;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				0BF1C2EA7D531B51C5765599 /* XCRemoteSwiftPackageReference "NovaAIKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 876CA105F785E3B3D73C2C01 /* Products */;
 			projectDirPath = "";
@@ -404,11 +413,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9896BEFDC4E55DDE94D5F984 /* AIBackendTests.swift in Sources */,
+				0B14AF3CAF258F860EC610FB /* AIKitAdoptionTests.swift in Sources */,
 				702FD06CA85033E4ABC9D9FF /* AzureDevOpsModelTests.swift in Sources */,
 				74B1422C1C478C5B02752FF3 /* IntegrationTests.swift in Sources */,
 				BB43CE8CAADBBFEB47D135D0 /* JiraModelTests.swift in Sources */,
-				4EA9380D42A0A8383133CAEC /* LoadBalancerTests.swift in Sources */,
 				7337023D2AA915A2FBB1F667 /* PersonSummaryTests.swift in Sources */,
 				A28BFED9FFC86C9089CF3C79 /* SecurityTests.swift in Sources */,
 				2C3E44F5A50FD20EE9B185DD /* SprintDataTests.swift in Sources */,
@@ -423,15 +431,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B21E318C09AD939CDDAF04A /* AIBackendManager+Balanced.swift in Sources */,
-				4BE20A624CEB9403F7CB8545 /* AIBackendManager+Enhanced.swift in Sources */,
-				1E845593E74BBA375E9B9F6E /* AIBackendManager+Generation.swift in Sources */,
-				9ABEE5A9058DF4C8E5EFF6DA /* AIBackendManager.swift in Sources */,
-				ABD625B6AB4C084F3B573704 /* AIBackendStatusMenu.swift in Sources */,
 				CCF58E1E861319D8C13A0040 /* AISummaryService.swift in Sources */,
 				43223BD142ADCDAD84CE4F6F /* ActivityTimelineView.swift in Sources */,
 				4120785CFAB045EFB9E2B99A /* AddPersonView.swift in Sources */,
 				AB464EC964E0DB949CF24DA2 /* AddSystemView.swift in Sources */,
+				7368E355F4A0EF4FC35C6BEF /* AppAI.swift in Sources */,
 				F166E0BE50CBFB813F039D42 /* AzureDevOpsModels.swift in Sources */,
 				967E52BA4121C0A5DFB8BC24 /* AzureDevOpsService.swift in Sources */,
 				020F7DE94768519BC8A44F7E /* ContentView.swift in Sources */,
@@ -443,13 +447,9 @@
 				AADC0EBE06B2EB8918C3F8FB /* JiraServerService.swift in Sources */,
 				1425E26CBE309C8568E3B51F /* JiraSummaryApp.swift in Sources */,
 				F33B9A375B9C605294CC3540 /* KeychainService.swift in Sources */,
-				56068627271B2510AA8D6C8C /* KeychainStore.swift in Sources */,
-				4DAB948A7B9512747F4F0045 /* LoadBalancerSupport.swift in Sources */,
 				4E6B0FF9EB27AE745AD552FD /* MenuBarManager.swift in Sources */,
-				C95FD61A3D297F8076388F69 /* ModelRegistry.swift in Sources */,
 				FB24F84B8C5F167B83CBD979 /* ModernDesign.swift in Sources */,
 				9FAF856805EC1C0939F0EBC3 /* NovaAPIServer.swift in Sources */,
-				F962789EEA0A8612E470D5AE /* OpenRouterProvider.swift in Sources */,
 				9836ADDA03A006D90F24B5CB /* PeopleListView.swift in Sources */,
 				F6C8EC7A40839CE7379A29E5 /* PersonDetailView.swift in Sources */,
 				1E037F3BA0B73AA85E67C2D5 /* PersonSummary.swift in Sources */,
@@ -613,7 +613,7 @@
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGN_ENTITLEMENTS = JiraSummary/JiraSummary.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_HARDENED_RUNTIME = NO;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = JiraSummary/Info.plist;
@@ -621,7 +621,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jordankoch.JiraSummary;
 				PRODUCT_NAME = JiraSummary;
 				SDKROOT = macosx;
@@ -635,7 +635,7 @@
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGN_ENTITLEMENTS = JiraSummary/JiraSummary.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_HARDENED_RUNTIME = NO;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = JiraSummary/Info.plist;
@@ -643,7 +643,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jordankoch.JiraSummary;
 				PRODUCT_NAME = JiraSummary;
 				SDKROOT = macosx;
@@ -715,6 +715,30 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0BF1C2EA7D531B51C5765599 /* XCRemoteSwiftPackageReference "NovaAIKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kochj23/NovaAIKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6ADC0D578F3A2D8F56B68C0A /* NovaAIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0BF1C2EA7D531B51C5765599 /* XCRemoteSwiftPackageReference "NovaAIKit" */;
+			productName = NovaAIKit;
+		};
+		9902EA5AF4C6D545078E6BA6 /* NovaAIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0BF1C2EA7D531B51C5765599 /* XCRemoteSwiftPackageReference "NovaAIKit" */;
+			productName = NovaAIKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9399050F5B905CE19EB503CA /* Project object */;
 }

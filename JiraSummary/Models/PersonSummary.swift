@@ -34,8 +34,10 @@ struct PersonSummary: Codable, Identifiable {
     var recentTickets: [TicketActivity]
     var recentTransitions: [StatusTransition]
 
-    // AI-generated summary (optional)
+    // Natural-language summary (AI via NovaAIKit, or the built-in summary when AI is off/unavailable)
     var aiSummary: String?
+    /// Where `aiSummary` came from: "AI · Ollama (model)" or "Built-in".
+    var aiSummarySource: String?
 
     init(personId: UUID, systemId: UUID, personName: String, systemName: String, period: SummaryPeriod) {
         self.id = UUID()

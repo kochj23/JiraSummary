@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import NovaAIKit
 
 struct PersonDetailView: View {
     @Environment(\.dismiss) private var dismiss
@@ -93,9 +94,18 @@ struct PersonDetailView: View {
                 HStack(spacing: 8) {
                     Image(systemName: "sparkles")
                         .foregroundColor(ModernColors.purple)
-                    Text(aiSummary)
-                        .font(.system(size: 13, design: .rounded))
-                        .foregroundColor(ModernColors.textSecondary)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(aiSummary)
+                            .font(.system(size: 13, design: .rounded))
+                            .foregroundColor(ModernColors.textSecondary)
+                        if let source = summary?.aiSummarySource {
+                            Text(source)
+                                .font(.system(size: 10, design: .rounded))
+                                .foregroundColor(ModernColors.textTertiary)
+                        }
+                    }
+                    Spacer(minLength: 0)
+                    NovaAIStatusIndicator(ai: AppAI.shared, showsLabel: false)
                 }
                 .padding(12)
                 .compactGlassCard(borderColor: ModernColors.purple.opacity(0.3))

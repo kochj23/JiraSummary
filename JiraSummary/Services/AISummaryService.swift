@@ -2,67 +2,94 @@
 //  AISummaryService.swift
 //  JiraSummary
 //
-//  AI-powered natural language summaries for person activity
-//  Delegates to AIBackendManager for multi-backend generation
+//  Natural-language activity summaries for a tracked person, through NovaAIKit (AppAI.shared).
+//  AI off, offline or a rejected reply → a deterministic summary built from the counts.
 //  Created by Jordan Koch on 2026-02-17.
 //
 
 import Foundation
-import os.log
+import NovaAIKit
 
-actor AISummaryService {
-    static let shared = AISummaryService()
+@MainActor
+enum AISummaryService {
+    nonisolated static let systemPrompt = "You are a concise engineering manager writing brief activity summaries. "
+        + "Be specific and factual. Use only the facts given. Write 2-3 plain sentences, no lists, no markdown."
 
-    private let logger = Logger(subsystem: "com.jordankoch.JiraSummary", category: "AISummary")
+    /// Longest summary the cards show.
+    nonisolated static let maxSummaryLength = 600
 
-    private init() {}
-
-    // MARK: - Generate Summary
-
-    func generateSummary(for personSummary: PersonSummary) async -> String? {
-        let manager = await AIBackendManager.shared
-
-        guard await manager.isEnabled else {
-            logger.info("AI summaries disabled")
-            return nil
+    /// Summarize one person: AI when enabled and reachable, otherwise the built-in summary.
+    /// Never throws; the result's `source.label` says where the text came from.
+    static func summarize(_ summary: PersonSummary, ai: NovaAI? = nil) async -> NovaAIResult<String> {
+        let ai = ai ?? AppAI.shared
+        let builtIn = fallbackSummary(for: summary)
+        guard summary.totalTickets > 0 else {
+            return NovaAIResult(value: builtIn, source: .fallback(.unavailable("no activity to summarize")))
         }
-
-        guard await manager.anyBackendAvailable else {
-            logger.warning("No AI backends available")
-            return nil
-        }
-
-        let prompt = buildPrompt(from: personSummary)
-        let systemPrompt = "You are a concise engineering manager writing brief activity summaries. Be specific and factual. Write in 2-3 sentences maximum."
-
-        do {
-            let result = try await manager.generateWithFallback(
-                prompt: prompt,
-                systemPrompt: systemPrompt
-            )
-            logger.info("AI summary generated for \(personSummary.personName)")
-            return result
-        } catch {
-            logger.error("AI summary failed: \(error.localizedDescription)")
-            return nil
-        }
+        let prompt = buildPrompt(from: summary)
+        let request = NovaAIRequest(prompt: prompt, system: systemPrompt, temperature: 0.3, maxTokens: 300)
+        return await ai.text(request, validate: validator(source: prompt)) { builtIn }
     }
 
-    // MARK: - Batch Summaries
+    /// Fills `aiSummary` / `aiSummarySource` on a copy of `summary`.
+    static func annotate(_ summary: PersonSummary, ai: NovaAI? = nil) async -> PersonSummary {
+        let result = await summarize(summary, ai: ai)
+        var copy = summary
+        copy.aiSummary = result.value
+        copy.aiSummarySource = result.source.label
+        return copy
+    }
 
-    func generateSummaries(for summaries: [PersonSummary]) async -> [String: String] {
-        var results: [String: String] = [:]
-        for summary in summaries {
-            if let text = await generateSummary(for: summary) {
-                results[summary.id.uuidString] = text
+    // MARK: - Validation
+
+    /// Accepts a non-empty plain-text reply of reasonable length whose numbers all appear in the prompt
+    /// (no invented counts or story points).
+    nonisolated static func validator(source: String) -> @Sendable (String) throws -> String {
+        { reply in
+            let text = NovaAIText.plain(try NovaAI.nonEmpty(reply), max: maxSummaryLength)
+            guard text.count >= 20 else { throw NovaAIValidationError("summary too short") }
+            guard NovaAIText.grounded(text, in: source) else {
+                throw NovaAIValidationError("summary contains numbers that are not in the activity data")
             }
+            return text
         }
-        return results
     }
 
-    // MARK: - Prompt Builder
+    // MARK: - Built-in summary
 
-    private func buildPrompt(from summary: PersonSummary) -> String {
+    /// Deterministic summary from the counts; used when AI is off, unreachable or its reply is rejected.
+    nonisolated static func fallbackSummary(for s: PersonSummary) -> String {
+        let window = periodPhrase(s.period)
+        guard s.totalTickets > 0 else {
+            return "\(s.personName) had no tracked ticket activity in \(s.systemName) \(window)."
+        }
+        var parts = ["\(s.ticketsCompleted) completed", "\(s.ticketsInProgress) in progress"]
+        if s.ticketsBlocked > 0 { parts.append("\(s.ticketsBlocked) blocked") }
+        if s.ticketsCreated > 0 { parts.append("\(s.ticketsCreated) created") }
+        let noun = s.totalTickets == 1 ? "ticket" : "tickets"
+        var text = "\(s.personName) touched \(s.totalTickets) \(noun) in \(s.systemName) \(window): "
+            + parts.joined(separator: ", ") + "."
+        if s.committedPoints > 0 {
+            text += " \(s.sprintName ?? "Current sprint"): \(Int(s.completedPoints)) of \(Int(s.committedPoints)) points completed."
+        }
+        if let latest = s.recentTickets.first {
+            text += " Most recent: \(latest.ticketKey) (\(latest.currentStatus))."
+        }
+        return text
+    }
+
+    nonisolated static func periodPhrase(_ period: SummaryPeriod) -> String {
+        switch period {
+        case .daily: return "today"
+        case .weekly: return "this week"
+        case .sprint: return "this sprint"
+        case .monthly: return "this month"
+        }
+    }
+
+    // MARK: - Prompt
+
+    nonisolated static func buildPrompt(from summary: PersonSummary) -> String {
         var lines: [String] = []
         lines.append("Summarize this person's work activity in 2-3 sentences. Be specific about what they accomplished.")
         lines.append("")
@@ -90,7 +117,6 @@ actor AISummaryService {
 
         lines.append("")
         lines.append("Write a brief, factual summary (2-3 sentences):")
-
         return lines.joined(separator: "\n")
     }
 }

@@ -15,6 +15,11 @@ settings:
     CODE_SIGN_STYLE: Manual
     DEVELOPMENT_TEAM: ""
 
+packages:
+  NovaAIKit:
+    url: https://github.com/kochj23/NovaAIKit.git
+    from: 1.0.0
+
 targets:
   JiraSummary:
     type: application
@@ -29,11 +34,14 @@ targets:
         PRODUCT_NAME: JiraSummary
         INFOPLIST_FILE: JiraSummary/Info.plist
         CODE_SIGN_ENTITLEMENTS: JiraSummary/JiraSummary.entitlements
-        MARKETING_VERSION: "1.2.0"
-        CURRENT_PROJECT_VERSION: "1"
+        MARKETING_VERSION: "1.3.0"
+        CURRENT_PROJECT_VERSION: "2"
         GENERATE_INFOPLIST_FILE: false
         ENABLE_HARDENED_RUNTIME: false
         CODE_SIGNING_ALLOWED: false
+    dependencies:
+      - package: NovaAIKit
+        product: NovaAIKit
     entitlements:
       path: JiraSummary/JiraSummary.entitlements
       properties:
@@ -57,3 +65,5 @@ targets:
         BUNDLE_LOADER: "$(TEST_HOST)"
     dependencies:
       - target: JiraSummary
+      - package: NovaAIKit
+        product: NovaAIKit

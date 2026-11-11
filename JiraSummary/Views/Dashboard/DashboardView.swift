@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import NovaAIKit
 
 struct DashboardView: View {
     @State private var dataStore = DataStore.shared
@@ -29,6 +30,10 @@ struct DashboardView: View {
                     }
 
                     Spacer()
+
+                    // AI status (summaries); click re-checks
+                    NovaAIStatusIndicator(ai: AppAI.shared)
+                        .help("AI summaries backend. Configure in Settings > AI.")
 
                     // Period picker
                     Picker("Period", selection: $selectedPeriod) {

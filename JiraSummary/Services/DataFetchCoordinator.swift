@@ -77,6 +77,16 @@ final class DataFetchCoordinator {
             }
         }
 
+        // Natural-language summaries (NovaAIKit; built-in text when AI is off or unavailable)
+        fetchProgress = "Writing summaries..."
+        for person in people {
+            if let summary = dataStore.personSummaries.first(where: {
+                $0.personId == person.id && $0.systemId == person.systemId && $0.period == period
+            }) {
+                dataStore.updateSummary(await AISummaryService.annotate(summary))
+            }
+        }
+
         dataStore.saveLastRefreshDate()
         WidgetDataSyncService.shared.syncFromDataStore()
         fetchProgress = "Done"

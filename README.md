@@ -1,38 +1,59 @@
 # JiraSummary
 
-![Build](https://github.com/kochj23/JiraSummary/actions/workflows/build.yml/badge.svg)
 ![Platform](https://img.shields.io/badge/platform-macOS%2014.0%2B-blue)
 ![Swift](https://img.shields.io/badge/Swift-5.9-orange)
+![AI](https://img.shields.io/badge/AI-NovaAIKit%201.0-purple)
+![Tests](https://img.shields.io/badge/tests-141%20passed-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Tests](https://img.shields.io/badge/tests-119%20passed-brightgreen)
 
-A native macOS application for tracking team activity across Jira Cloud, Jira Server/Data Center, and Azure DevOps -- all from a single dashboard. Built for engineering managers and tech leads who need weekly summaries, sprint velocity charts, and AI-generated insights without switching between three different browser tabs.
+A native macOS app that tracks team activity across Jira Cloud, Jira Server/Data Center and Azure DevOps from one
+dashboard: per-person ticket counts, sprint velocity, status timelines and a short natural-language summary for
+each person. The summary is written by AI when you want it (local or cloud backends through
+[NovaAIKit](https://github.com/kochj23/NovaAIKit)) and by a built-in, deterministic summarizer when you don't.
 
-**Version:** 1.2.0 | **Bundle ID:** com.jordankoch.JiraSummary
+**Version:** 1.3.0 (build 2) | **Bundle ID:** `com.jordankoch.JiraSummary` | **Changelog:** [CHANGELOG.md](CHANGELOG.md)
+
+![JiraSummary](Screenshots/main-window.png)
 
 ---
 
-![Jira Summary](Screenshots/main-window.png)
+## Contents
 
----
-
-## Table of Contents
-
-- [Architecture](#architecture)
 - [Features](#features)
+- [Architecture](#architecture)
+- [AI](#ai)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
-- [AI Configuration](#ai-configuration)
-- [API Integration](#api-integration)
-- [Widget Extension](#widget-extension)
+- [Supported systems](#supported-systems)
 - [Local HTTP API](#local-http-api)
-- [Project Structure](#project-structure)
-- [Testing](#testing)
+- [Building from source](#building-from-source)
+- [Tests](#tests)
 - [Security](#security)
 - [Troubleshooting](#troubleshooting)
-- [Building from Source](#building-from-source)
+- [Project structure](#project-structure)
 - [License](#license)
+
+---
+
+## Features
+
+- **Multi-system dashboard** - any mix of Jira Cloud, Jira Server/Data Center and Azure DevOps connections,
+  fetched in parallel and shown together.
+- **SSO sign-in** - an embedded WKWebView handles Okta / Azure AD / SAML; only the resulting session cookie is kept,
+  in the Keychain. No passwords are stored.
+- **Per-person summary cards** - tickets touched, completed, in progress, blocked and created for a daily, weekly,
+  sprint or monthly window, plus sprint points committed vs. completed.
+- **Activity summaries** - 2-3 sentences per person, from AI or the built-in summarizer, with a label saying which
+  ("AI · Ollama (qwen3:8b)" or "Built-in").
+- **Drill-down** - sortable ticket table, status-transition timeline, sprint velocity charts (Swift Charts, last 8
+  sprints).
+- **AI status indicator** - a dot + label in the dashboard header (and a dot on the person detail view): green when a
+  backend answers, orange when none does, grey when AI is off. Click to re-check.
+- **Menu bar item** - completed / in progress / blocked counts, last refresh, refresh and open-window actions.
+- **Auto-refresh** - 15 min to 2 h, or manual.
+- **Local HTTP API** on `127.0.0.1:37433` for local automation.
+- **Glassmorphic dark theme** with SF Rounded typography.
 
 ---
 
@@ -40,471 +61,260 @@ A native macOS application for tracking team activity across Jira Cloud, Jira Se
 
 ```mermaid
 graph TB
-    subgraph App["macOS Application"]
-        subgraph UI["SwiftUI Views"]
-            Dashboard[Dashboard]
-            Systems[Systems]
-            People[People]
-            Activity[Activity]
-            Settings[Settings]
+    subgraph App["JiraSummary.app"]
+        subgraph UI["SwiftUI views"]
+            Dash["DashboardView<br/>+ NovaAIStatusIndicator"]
+            Card["SummaryCardView<br/>summary + source label"]
+            Detail["PersonDetailView"]
+            Settings["SettingsView<br/>+ NovaAISettingsView"]
         end
-
-        MenuBar["Menu Bar Item<br/>Completed / In Progress / Blocked"]
-
-        subgraph Services["Service Layer (Swift Actors + async)"]
-            DFC[DataFetchCoordinator]
-            JCS[JiraCloudService<br/>REST v3]
-            JSS[JiraServerService<br/>REST v2]
-            ADS[AzureDevOpsService<br/>REST 7.1]
-            SE[SummaryEngine]
-            SSO[SSOAuthService<br/>WKWebView]
-            MBM[MenuBarManager]
+        subgraph Services["Services"]
+            DFC["DataFetchCoordinator"]
+            JCS["JiraCloudService (REST v3)"]
+            JSS["JiraServerService (REST v2)"]
+            ADS["AzureDevOpsService (REST 7.1)"]
+            SE["SummaryEngine<br/>counts + velocity"]
+            AIS["AISummaryService<br/>prompt, validator, built-in summary"]
+            SSO["SSOAuthService (WKWebView)"]
+            MBM["MenuBarManager"]
         end
-
-        subgraph AI["AI Backend Manager (10 backends)"]
-            direction LR
-            Local["Local: Ollama, MLX,<br/>TinyLLM, TinyChat, OpenWebUI"]
-            Cloud["Cloud: OpenAI, Google,<br/>Azure, AWS, IBM Watson"]
+        subgraph Data["Data"]
+            DS["DataStore (JSON)"]
+            KC["KeychainService<br/>system session cookies"]
         end
-
-        AIS[AISummaryService<br/>Prompt construction]
-
-        subgraph Data["Data Layer"]
-            DS[DataStore<br/>JSON persistence]
-            KC[KeychainService<br/>macOS Keychain]
-        end
-
-        WDS[Widget Data Sync<br/>WidgetKit]
-        Nova[Nova API Server<br/>127.0.0.1:37433]
+        AppAI["AppAI.shared<br/>(NovaAI, appID jirasummary)"]
+        Nova["NovaAPIServer 127.0.0.1:37433"]
     end
-
-    subgraph External["External Systems"]
-        JC["Jira Cloud<br/>(Atlassian)"]
-        JS["Jira Server /<br/>Data Center"]
+    subgraph Kit["NovaAIKit 1.0"]
+        Engine["Auto failover, retries,<br/>timeouts, validation"]
+        Keys["Keychain<br/>com.jkoch.jirasummary.*"]
+    end
+    subgraph Ext["External"]
+        JC["Jira Cloud"]
+        JS["Jira Server / DC"]
         AZ["Azure DevOps"]
+        LLM["Ollama, MLX, TinyLLM, TinyChat,<br/>OpenWebUI, Nova Gateway,<br/>OpenRouter, OpenAI"]
     end
 
-    UI --> Services
-    MenuBar --> MBM
+    Dash --> DFC
     DFC --> JCS & JSS & ADS
-    Services --> Data
-    AI --> AIS
-    AIS --> SE
-    Data --> WDS
     JCS --> JC
     JSS --> JS
     ADS --> AZ
-    KC -.->|credentials| JCS & JSS & ADS
-
-    style App fill:#1a1a2e,stroke:#16213e,color:#e0e0e0
-    style UI fill:#0f3460,stroke:#533483,color:#e0e0e0
-    style Services fill:#16213e,stroke:#0f3460,color:#e0e0e0
-    style AI fill:#533483,stroke:#e94560,color:#e0e0e0
-    style Data fill:#1a1a2e,stroke:#0f3460,color:#e0e0e0
-    style External fill:#0d1117,stroke:#30363d,color:#c9d1d9
+    DFC --> SE --> DS
+    DFC --> AIS --> AppAI --> Engine --> LLM
+    Engine --> Keys
+    DS --> Card & Detail
+    Settings --> AppAI
+    Dash --> AppAI
+    KC -.credentials.-> JCS & JSS & ADS
+    MBM --> DS
 ```
 
-**Key architectural decisions:**
+### Summary pipeline
 
-- **Zero external dependencies.** Every component uses native Apple frameworks: SwiftUI, WebKit, Network, Security, WidgetKit, Swift Charts.
-- **Swift Structured Concurrency.** All network fetching uses async/await with `withTaskGroup` for parallel system queries. Service classes are `@MainActor` actors for thread safety.
-- **Observation framework.** State management uses `@Observable` (not Combine), keeping the reactive layer modern and lightweight.
-- **Keychain-first credential storage.** All authentication tokens, session cookies, and API keys are stored in macOS Keychain with `WhenUnlockedThisDeviceOnly` access control. API keys are migrated from UserDefaults to Keychain on first launch.
+```mermaid
+flowchart LR
+    F["Fetch tickets + sprints"] --> C["SummaryEngine<br/>counts, points"]
+    C --> Z{"Any activity?"}
+    Z -- no --> B["Built-in summary"]
+    Z -- yes --> On{"AI on?"}
+    On -- no --> B
+    On -- yes --> Ask["NovaAIKit: Auto failover<br/>+ retries + timeouts"]
+    Ask -- "all backends down" --> B
+    Ask --> V{"Validator:<br/>non-empty, plain text,<br/>&le; 600 chars, every number<br/>present in the data"}
+    V -- ok --> A["AI summary<br/>+ 'AI · backend (model)'"]
+    V -- rejected --> R["Ask once more<br/>with the reason"]
+    R --> V2{"Valid?"}
+    V2 -- yes --> A
+    V2 -- no --> B
+    B --> Card["Summary card<br/>'Built-in'"]
+    A --> Card
+```
 
 ---
 
-## Features
+## AI
 
-### Multi-System Dashboard
+JiraSummary uses [NovaAIKit](https://github.com/kochj23/NovaAIKit) 1.0 for everything AI. It has no AI client code of
+its own.
 
-Connect to any combination of Jira Cloud, Jira Server/Data Center, and Azure DevOps instances simultaneously. Each system gets its own authentication session and fetch pipeline. Data from all systems is aggregated into a single unified dashboard.
+**Settings > AI** (the standard `NovaAISettingsView`):
 
-### SSO Authentication
+- **Use AI** on/off. Off = the built-in summarizer only; nothing is sent anywhere.
+- **Backend**: Auto (first reachable, in order), Ollama, MLX, TinyLLM, TinyChat, OpenWebUI, Nova Gateway, OpenRouter,
+  OpenAI.
+- Per backend: editable URL, model picker (lists the server's models), API key field where one applies.
+- Timeout, and a **Test connection** button.
 
-An embedded WKWebView handles single sign-on flows for Okta, Azure AD, and SAML providers. After login completes, JiraSummary captures the session cookie (cloud.session.token for Jira Cloud, JSESSIONID for Jira Server, FedAuth/AadAuth for Azure DevOps) and stores it in macOS Keychain. No passwords are ever stored -- only session tokens with natural expiry.
+| Feature | AI does | When AI is off, down, or its reply is rejected |
+|---|---|---|
+| Person activity summary | Writes 2-3 sentences from the counts, sprint points and up to 5 recent tickets | Built-in summary: "*Name* touched N tickets in *System* this week: X completed, Y in progress, Z blocked, W created. *Sprint*: a of b points completed. Most recent: *KEY* (*status*)." |
 
-### Activity Tracking and Summaries
+**Validation.** A reply must be non-empty, plain text, at most 600 characters, and every number in it must appear in
+the activity data sent (no invented counts or points). A rejected reply is retried once with the reason, then the
+built-in summary is used. Each summary shows where it came from.
 
-- **Period-based views:** daily, weekly, sprint, or monthly time ranges
-- **Per-person summary cards** with ticket counts, velocity gauges, and AI-generated insights
-- **Aggregate statistics:** total tickets, completed, in progress, blocked, average velocity
-- **Sortable ticket tables** with search and filter
-- **Status transition timeline** grouped by day
-- **Sprint velocity bar charts** showing committed vs. completed points across the last 8 sprints (Swift Charts)
+**Failover.** Auto tries every configured backend in order with per-request timeouts and retries for transient
+errors (5xx, 429, dropped connections); a backend that just failed is skipped for a minute.
 
-### AI-Powered Summaries (10 Backends)
+**Keys.** API keys live only in the macOS Keychain under `com.jkoch.jirasummary.openrouter` and
+`com.jkoch.jirasummary.openai`. The settings view shows "stored", never the key. Keys are only ever sent over https.
+Cloud backends join Auto only when a key is stored.
 
-JiraSummary supports 10 AI backends with automatic fallback. If the active backend is unavailable, the next one in priority order is tried automatically.
+**Privacy.** A summary request contains the person's display name, the system name, counts and recent ticket titles.
+Use a local backend (Ollama, MLX, TinyLLM, TinyChat, OpenWebUI, Nova Gateway) to keep that on your network.
 
-| Type | Backend | Default URL / Detection |
-|------|---------|------------------------|
-| Local | Ollama | http://localhost:11434 |
-| Local | MLX | Auto-detected at /opt/homebrew/bin/mlx_lm or /usr/local/bin/mlx_lm |
-| Local | TinyLLM | http://localhost:8000 |
-| Local | TinyChat | http://localhost:8000 |
-| Local | OpenWebUI | http://localhost:8080 |
-| Cloud | OpenAI | API key required (Keychain) |
-| Cloud | Google Cloud | API key required (Keychain) |
-| Cloud | Azure | API key + endpoint (Keychain) |
-| Cloud | AWS | Access key + secret + region (Keychain) |
-| Cloud | IBM Watson | API key + URL (Keychain) |
-
-Features include configurable generation parameters (temperature 0.0--1.0, max tokens 50--2000), per-backend usage statistics and performance metrics, cost estimation for cloud backends, background health monitoring at 60-second intervals, and one-click connection testing.
-
-### Menu Bar Integration
-
-A persistent menu bar item shows summary counts (completed, in progress, blocked), last refresh time, a one-click data refresh button, and a shortcut to open the main window. The app continues running when the last window is closed.
-
-### Widget Extension
-
-A WidgetKit extension displays ticket counts, sprint velocity, active sprint name, and top contributor on the desktop. Data syncs from the main app via a shared JSON file.
-
-### Glassmorphic Dark Theme
-
-The UI uses a custom design system with animated floating blobs, glass cards with blur backgrounds and gradient borders, circular progress gauges, color-coded status badges, and consistent SF Rounded typography throughout. Dark mode is enforced at the application level.
+**Upgrading from 1.2.x.** On first launch, the old settings are imported (backend, URLs including Nova Gateway,
+Ollama and OpenRouter models, on/off); the OpenAI key is moved from `com.jordankoch.JiraSummary` to
+`com.jkoch.jirasummary.openai`; the OpenRouter key shared with AIStudio is copied (the original stays); stored
+Google Cloud, Azure, AWS and IBM Watson secrets are deleted from the Keychain and UserDefaults. Those four backends
+were removed, as were the per-app temperature/max-tokens sliders, usage statistics and the in-app load balancer
+(NovaAIKit's Auto failover replaces it).
 
 ---
 
 ## Requirements
 
 - macOS 14.0 (Sonoma) or later
-- Xcode 16.0 or later (for building from source)
-- XcodeGen (for project generation from source)
-
-### Optional (for AI summaries)
-
-Any of the supported backends listed in the AI section above. For the quickest setup:
-
-```
-brew install ollama
-ollama pull llama3
-ollama serve
-```
+- Optional, for AI summaries: any one backend above. Quickest: `brew install ollama && ollama pull qwen3:8b && ollama serve`
+- Building: Xcode 16+ and XcodeGen (`brew install xcodegen`)
 
 ---
 
 ## Installation
 
-JiraSummary is distributed as a DMG installer. It is not available on the Mac App Store.
-
-**Download the latest DMG from [Releases](https://github.com/kochj23/JiraSummary/releases)**, open the disk image, and drag JiraSummary to your Applications folder.
-
-To build from source instead:
-
-```bash
-git clone git@github.com:kochj23/JiraSummary.git
-cd JiraSummary
-xcodegen generate
-xcodebuild -project JiraSummary.xcodeproj -scheme JiraSummary -configuration Release build
-```
+Open `JiraSummary-v1.3.0-build2.dmg` and drag **JiraSummary** onto **Applications**. The build is ad hoc signed for
+local use; on first launch, right-click > Open if Gatekeeper asks.
 
 ---
 
 ## Usage
 
-1. **Add Systems** -- Open the sidebar and click "Systems", then "Add System". Choose Jira Cloud, Jira Server, or Azure DevOps, enter the base URL, and authenticate through the embedded SSO login.
-
-2. **Add People** -- Click "People" in the sidebar, search for team members across connected systems by name, and add them. Each person is linked to a specific system and user ID (accountId for Jira Cloud, username for Jira Server, email for Azure DevOps).
-
-3. **View Dashboard** -- The dashboard shows a summary card for each tracked person with ticket counts, sprint velocity gauges, and AI-generated natural language insights. Use the period selector to switch between daily, weekly, sprint, and monthly time ranges.
-
-4. **Drill Down** -- Click any person card to see full activity detail across three tabs: Tickets (sortable table), Timeline (status transitions by day), and Sprints (velocity charts for the last 8 sprints).
-
-5. **Refresh** -- Click "Refresh" in the sidebar or configure auto-refresh in Settings. Available intervals: 15 minutes, 30 minutes, 1 hour, 2 hours, or manual only.
+1. **Systems** > Add System: pick Jira Cloud, Jira Server or Azure DevOps, enter the base URL, sign in through SSO.
+2. **People** > search a connected system and add team members.
+3. **Dashboard**: pick a period (daily / weekly / sprint / monthly) and click **Refresh**. Each card shows counts,
+   velocity and the activity summary with its source.
+4. Click a card for the ticket table, timeline and sprint charts.
+5. **Settings**: refresh interval, default period, menu bar item, and AI.
 
 ---
 
-## AI Configuration
+## Supported systems
 
-### Quick Start with Ollama
+| System | API | Auth | Data |
+|---|---|---|---|
+| Jira Cloud | REST v3 | session cookie | JQL search, changelogs, sprints, boards, user search |
+| Jira Server / Data Center | REST v2 | session cookie | JQL search, changelogs, sprints, boards, user search |
+| Azure DevOps | REST 7.1 | session cookie | WIQL, work item updates, iterations, team members |
 
-```bash
-brew install ollama
-ollama pull llama3
-ollama serve
-```
-
-Then enable AI summaries in the app: Settings > AI Backend > Enable AI summaries. JiraSummary will auto-detect the running Ollama instance and discover available models.
-
-### Multi-Backend Setup
-
-In Settings, configure any combination of backends:
-
-- **Local backends:** Set server URLs for Ollama, TinyLLM, TinyChat, and OpenWebUI. MLX is auto-detected from the filesystem.
-- **Cloud backends:** Enter API keys for OpenAI, Google Cloud, Azure (key + endpoint), AWS (access key + secret + region), or IBM Watson (key + URL). All keys are stored in macOS Keychain.
-- **Generation parameters:** Adjust temperature (0.0--1.0) and max tokens (50--2000) per your preference.
-- **Connection testing:** Test any backend with a single click to verify connectivity and measure response time.
-- **Auto-fallback:** If the active backend fails, JiraSummary tries the next available backend in priority order: Ollama, OpenAI, TinyChat, TinyLLM, OpenWebUI, MLX.
-
-All API keys are stored in macOS Keychain and never transmitted to third parties. Local backends keep all data on your machine.
-
----
-
-## API Integration
-
-| System | API Version | Auth Method | Capabilities |
-|--------|-------------|-------------|-------------|
-| Jira Cloud | REST v3 | Cookie (cloud.session.token) | JQL search, changelogs, sprints, boards, user search |
-| Jira Server / Data Center | REST v2 | Cookie (JSESSIONID) | JQL search, changelogs, sprints, boards, user search |
-| Azure DevOps | REST 7.1 | Cookie (FedAuth / AadAuth) | WIQL queries, work item updates, iterations, team members |
-
-All queries are parameterized. Jira JQL and Azure DevOps WIQL inputs are sanitized before inclusion in queries to prevent injection attacks.
-
----
-
-## Widget Extension
-
-The `JiraSummary Widget` target provides a WidgetKit extension that displays:
-
-- Systems connected and total tracked people
-- Ticket counts: total, completed, in progress, blocked, created
-- Average velocity percentage
-- Active sprint name
-- Top contributor with ticket count
-
-Data is synced from the main app to the widget via a shared JSON file in the app group container (`group.com.jordankoch.jirasummary`). The widget timeline reloads automatically after each data refresh.
+JQL and WIQL inputs are escaped before they go into a query.
 
 ---
 
 ## Local HTTP API
 
-JiraSummary exposes a lightweight HTTP API on port **37433**, bound to 127.0.0.1 only (no external network exposure). The server starts automatically at launch.
+Bound to `127.0.0.1:37433` only.
 
 ```bash
-# Health check
 curl http://127.0.0.1:37433/api/ping
-
-# App status (returns version, uptime, port)
-curl http://127.0.0.1:37433/api/status
+curl http://127.0.0.1:37433/api/status    # app, version, port, uptime
 ```
-
-This API is designed for integration with local automation tools and AI assistants.
 
 ---
 
-## Project Structure
-
-```
-JiraSummary/
-|-- JiraSummary/
-|   |-- Design/
-|   |   +-- ModernDesign.swift              Glassmorphic design system
-|   |-- Models/
-|   |   |-- SystemConnection.swift          System types, auth credentials
-|   |   |-- TrackedPerson.swift             Per-system user tracking
-|   |   |-- TicketActivity.swift            Work items and status transitions
-|   |   |-- PersonSummary.swift             Aggregated activity summaries
-|   |   |-- SprintData.swift                Sprint velocity data
-|   |   |-- JiraModels.swift                Jira REST API Codable types
-|   |   +-- AzureDevOpsModels.swift         Azure DevOps API Codable types
-|   |-- Services/
-|   |   |-- DataStore.swift                 JSON persistence layer
-|   |   |-- DataFetchCoordinator.swift      Parallel multi-system fetch engine
-|   |   |-- SummaryEngine.swift             Data aggregation engine
-|   |   |-- KeychainService.swift           macOS Keychain wrapper
-|   |   |-- SSOAuthService.swift            WKWebView SSO auth flow
-|   |   |-- JiraCloudService.swift          Jira Cloud REST v3 client
-|   |   |-- JiraServerService.swift         Jira Server REST v2 client
-|   |   |-- AzureDevOpsService.swift        Azure DevOps REST 7.1 client
-|   |   |-- AIBackendManager.swift          Multi-backend AI orchestration
-|   |   |-- AIBackendManager+Enhanced.swift Extended backend capabilities
-|   |   |-- AIBackendManager+Generation.swift  Text generation + fallback
-|   |   |-- AISummaryService.swift          AI summary prompt construction
-|   |   |-- AIBackendStatusMenu.swift       Reusable backend status component
-|   |   |-- MenuBarManager.swift            Menu bar status item
-|   |   +-- WidgetDataSync.swift            Widget data synchronization
-|   |-- Views/
-|   |   |-- ContentView.swift               NavigationSplitView root
-|   |   |-- Sidebar/SidebarView.swift       Navigation sidebar
-|   |   |-- Dashboard/
-|   |   |   |-- DashboardView.swift         Overview with aggregate stats
-|   |   |   +-- SummaryCardView.swift       Per-person summary card
-|   |   |-- Systems/
-|   |   |   |-- SystemsListView.swift       Connection management
-|   |   |   |-- AddSystemView.swift         New connection wizard
-|   |   |   +-- SSOWebView.swift            SSO login WebView
-|   |   |-- People/
-|   |   |   |-- PeopleListView.swift        Team member inventory
-|   |   |   |-- AddPersonView.swift         User search and add
-|   |   |   +-- PersonDetailView.swift      Full activity detail
-|   |   |-- Activity/
-|   |   |   |-- TicketListView.swift        Sortable ticket table
-|   |   |   |-- ActivityTimelineView.swift  Status transition timeline
-|   |   |   +-- SprintVelocityView.swift    Sprint velocity charts
-|   |   +-- Settings/
-|   |       |-- SettingsView.swift          Full configuration UI
-|   |       +-- AIBackendStatusMenu.swift   Backend status in settings
-|   |-- JiraSummaryApp.swift                App entry point + AppDelegate
-|   |-- NovaAPIServer.swift                 Local HTTP API server
-|   |-- Info.plist                          Bundle configuration
-|   +-- JiraSummary.entitlements            Sandbox disabled, network client
-|-- JiraSummary Widget/
-|   |-- JiraSummaryWidget.swift             WidgetKit extension views
-|   |-- SharedDataManager.swift             Shared data reading
-|   |-- WidgetData.swift                    Widget data model
-|   +-- Info.plist                          Widget configuration
-|-- project.yml                             XcodeGen project specification
-|-- LICENSE                                 MIT License
-|-- SECURITY.md                             Security policy
-|-- CHANGELOG.md                            Version history
-+-- JiraSummary.xcodeproj/                  Generated Xcode project
-```
-
-**3 targets** | **52 Swift files** | **Zero external dependencies**
-
----
-
-## Testing
-
-JiraSummary includes a comprehensive XCTest suite covering unit tests, functional tests, security tests, and integration tests.
-
-### Running Tests
+## Building from source
 
 ```bash
-xcodebuild test -project JiraSummary.xcodeproj -scheme JiraSummaryTests \
-  -configuration Debug -destination "platform=macOS"
+git clone git@github.com:kochj23/JiraSummary.git
+cd JiraSummary
+xcodegen generate                      # project.yml is the source of truth
+xcodebuild -project JiraSummary.xcodeproj -scheme JiraSummary -configuration Release build
 ```
 
-### Test Coverage
+The only package dependency is NovaAIKit (`https://github.com/kochj23/NovaAIKit.git`, from 1.0.0), resolved by
+Xcode. The version lives in `project.yml` (`MARKETING_VERSION`, `CURRENT_PROJECT_VERSION`). Release builds have zero
+compiler warnings.
 
-| Test Suite | Tests | Coverage Area |
-|-----------|-------|--------------|
-| **JiraModelTests** | 10 | Jira Cloud/Server REST API Codable parsing, search responses, sprints, boards, users, changelogs |
-| **AzureDevOpsModelTests** | 9 | Azure DevOps WIQL responses, work items, updates, iterations, team members, projects |
-| **TicketActivityTests** | 10 | TicketActivity creation, Codable round-trip, StatusTransition, Hashable conformance |
-| **PersonSummaryTests** | 15 | PersonSummary init, velocity percentage, completion rate, SummaryPeriod, edge cases (division by zero) |
-| **SprintDataTests** | 12 | SprintData init/Codable, SprintState, PersonSprintBreakdown, velocity calculations |
-| **SystemConnectionTests** | 12 | SystemType enum, SystemConnection init/Codable, AuthCredential types |
-| **TrackedPersonTests** | 5 | TrackedPerson init/Codable, unique ID generation, Hashable conformance |
-| **SummaryEngineTests** | 11 | Data aggregation, status recognition (done/progress/blocked), period filtering, story points, sprint velocity, recent activity limits |
-| **SecurityTests** | 14 | Keychain CRUD operations, API keys not in UserDefaults, error messages don't leak credentials, URL safety, loopback binding, cost estimation |
-| **IntegrationTests** | 8 | End-to-end JSON parsing pipelines (Jira Cloud, Azure DevOps), PersonSummary generation from raw data, malformed input handling |
-| **AIBackendTests** | 13 | AIBackend enum coverage, UsageStats, PerformanceMetrics, ConnectionTestResult, cost estimation |
+The `JiraSummary Widget/` sources are kept in the repo but are not a target in `project.yml` today.
 
-**Total: 119 tests across 11 test suites**
+---
 
-### Test Philosophy
+## Tests
 
-- **Unit tests** verify each model's Codable conformance, computed properties, and edge cases
-- **Functional tests** verify the SummaryEngine aggregation logic with realistic data
-- **Security tests** verify Keychain usage, credential isolation from UserDefaults, and safe error messages
-- **Integration tests** simulate full data pipelines from raw JSON API responses through to PersonSummary output
+```bash
+xcodebuild test -project JiraSummary.xcodeproj -scheme JiraSummary
+```
+
+141 tests, all passing. All fixtures are synthetic; AI tests use an in-memory settings store, an in-memory key store
+and a stub `URLProtocol`, so nothing reaches the real Keychain or network.
+
+| Category | Suites | Tests |
+|---|---|---|
+| Security | `AIKitSecurityTests`, `SecurityTests` | 5 + 20 |
+| Performance | `AIKitPerformanceTests` | 2 |
+| Retry | `AIKitRetryTests` | 3 |
+| Unit | `AIKitUnitTests`, `JiraModelTests`, `AzureDevOpsModelTests`, `TicketActivityTests`, `PersonSummaryTests`, `SprintDataTests`, `SystemConnectionTests`, `TrackedPersonTests` | 6 + 74 |
+| Integration | `AIKitIntegrationTests`, `IntegrationTests` | 3 + 8 |
+| Functional | `AIKitFunctionalTests`, `SummaryEngineTests` | 4 + 12 |
+| Frame / UI state | `AIKitFrameTests` | 4 |
+
+The AI suites cover: AI off and offline fallbacks (nothing sent), retry on 5xx, re-ask on a rejected reply, fallback
+after two rejections, the validator (empty, too short, invented numbers, length cap), Keychain service names, legacy
+Keychain/UserDefaults migration and its idempotency, no key over plain http, no old AI client left in the sources,
+status indicator states, and view rendering.
 
 ---
 
 ## Security
 
-### Credential Storage
+- System session cookies: Keychain (`com.jordankoch.JiraSummary`), `WhenUnlockedThisDeviceOnly`.
+- AI keys: Keychain only (`com.jkoch.jirasummary.*`), https only, never logged or shown. 1.3.0 removes the plaintext
+  Google/Azure/AWS/IBM secrets older versions could leave behind.
+- No inbound network exposure; the local API listens on loopback only.
+- Not sandboxed (network client entitlement).
 
-All credentials are stored in macOS Keychain with `kSecAttrAccessibleWhenUnlockedThisDeviceOnly` access control. This includes SSO session cookies, authentication tokens, and all cloud AI API keys. A one-time migration moves any API keys previously stored in UserDefaults to Keychain automatically.
-
-### Network
-
-- **Outbound only.** JiraSummary makes outbound HTTPS requests to configured systems and cloud AI providers. There is no inbound server component exposed to the network.
-- **App Transport Security.** NSAllowsArbitraryLoads is not set. All connections require HTTPS except for local AI backends on localhost.
-- **The local HTTP API** binds exclusively to 127.0.0.1 and is not reachable from other machines.
-
-### Input Sanitization
-
-- **JQL injection prevention.** User input is sanitized before inclusion in Jira Query Language queries.
-- **WIQL injection prevention.** Azure DevOps Work Item Query Language queries use parameterized inputs.
-
-### Entitlements
-
-- **No App Sandbox** -- Full file system access is enabled for system utility functionality.
-- **Network Client** -- Outbound network access is enabled.
-- **Hardened Runtime** -- Enabled for distribution builds.
-
-### SSO Session Handling
-
-No passwords are stored at any point. JiraSummary captures session cookies through the embedded WKWebView after the user completes SSO login through their identity provider. Cookies expire naturally per the provider's session policy. A non-persistent web data store is used for clean authentication sessions.
+See [SECURITY.md](SECURITY.md).
 
 ---
 
 ## Troubleshooting
 
-### Authentication fails or SSO does not complete
-
-- Verify the system URL includes `https://` and is correct for your instance.
-- Jira Cloud: use `https://yourcompany.atlassian.net`
-- Jira Server: use the full URL of your on-premise instance.
-- Azure DevOps: use `https://dev.azure.com/yourorg`
-- Session cookies expire naturally. Re-authenticate by clicking the system in the sidebar and logging in again.
-
-### No data appears after refresh
-
-- Confirm tracked people have the correct user IDs for each system type: Jira Cloud uses `accountId`, Jira Server uses `username`, Azure DevOps uses email.
-- Verify your SSO session has access to the relevant projects and boards.
-- Check that board IDs are configured for sprint data.
-
-### AI summaries are not generating
-
-- Open Settings and check the AI Backend section. Green dots indicate available backends.
-- For Ollama: confirm `ollama serve` is running and at least one model is pulled (`ollama list`).
-- Use the "Test Connection" button to verify backend connectivity and response time.
-- Confirm AI summaries are enabled (toggle in Settings).
-
-### Widget shows stale data
-
-- Open the main app and trigger a manual refresh. Widget data syncs after each fetch cycle.
-- Ensure the app group container (`group.com.jordankoch.jirasummary`) is properly configured if building from source.
+| Symptom | Fix |
+|---|---|
+| Cards say "Built-in" | AI is off, or no backend answered. Check the status dot; open Settings > AI and use Test connection. |
+| Status dot orange | No backend reachable. Start Ollama (`ollama serve`) or set a URL / key in Settings > AI. |
+| Cloud backend never used | Store its key in Settings > AI; keyed backends join Auto only with a key. |
+| SSO doesn't finish | Check the base URL (https), then sign in again from Systems. |
+| No data after refresh | Check each person's ID type: accountId (Jira Cloud), username (Jira Server), email (Azure DevOps). |
 
 ---
 
-## Building from Source
+## Project structure
 
-### Prerequisites
-
-- Xcode 16.0 or later
-- XcodeGen: `brew install xcodegen`
-
-### Steps
-
-```bash
-git clone git@github.com:kochj23/JiraSummary.git
-cd JiraSummary
-xcodegen generate
-open JiraSummary.xcodeproj
 ```
-
-Select the **JiraSummary** scheme and build for "My Mac" (macOS 14.0+).
-
-To regenerate the Xcode project after adding or removing source files:
-
-```bash
-xcodegen generate
+JiraSummary/
+  AI/AppAI.swift                 The app's NovaAI instance + one-time legacy migration
+  Services/
+    AISummaryService.swift       Prompt, validator, built-in summary
+    SummaryEngine.swift          Counts and velocity
+    DataFetchCoordinator.swift   Parallel fetch, then summaries
+    JiraCloudService.swift / JiraServerService.swift / AzureDevOpsService.swift
+    KeychainService.swift        System session cookies
+    SSOAuthService.swift, DataStore.swift, MenuBarManager.swift, WidgetDataSync.swift
+  Models/                        SystemConnection, TrackedPerson, TicketActivity, PersonSummary, SprintData, API types
+  Views/                         Dashboard, People, Activity, Systems, Settings, Sidebar
+  Design/ModernDesign.swift      Glass design system
+  NovaAPIServer.swift            Loopback HTTP API
+JiraSummaryTests/                141 XCTest cases (AIKitAdoptionTests.swift = AI contract)
+project.yml                      XcodeGen spec
 ```
-
-The project uses Swift 5.9, targets macOS 14.0 (Sonoma), and has no external Swift Package Manager or CocoaPods dependencies.
 
 ---
 
 ## License
 
-MIT License -- see [LICENSE](LICENSE) for the full text.
+MIT - see [LICENSE](LICENSE). Copyright (c) 2026 Jordan Koch.
 
-Copyright (c) 2026 Jordan Koch.
-
----
-
-## Author
-
-Written by Jordan Koch ([GitHub](https://github.com/kochj23)).
-
----
-
-## More Apps by Jordan Koch
-
-| App | Description |
-|-----|-------------|
-| [MailSummary](https://github.com/kochj23/MailSummary) | AI-powered email categorization and summarization |
-| [NewsSummary](https://github.com/kochj23/NewsSummary) | AI-powered news aggregation and summarization |
-| [MLXCode](https://github.com/kochj23/MLXCode) | Local AI coding assistant for Apple Silicon |
-| [OneOnOne](https://github.com/kochj23/OneOnOne) | One-on-one meeting management tool |
-| [ExcelExplorer](https://github.com/kochj23/ExcelExplorer) | Native macOS Excel/CSV file viewer |
-
-[View all projects](https://github.com/kochj23?tab=repositories)
-
----
-
-> **Disclaimer:** This is a personal project created on personal time. It is not affiliated with, endorsed by, or representative of any employer.
+> This is a personal project created on personal time. It is not affiliated with, endorsed by, or representative of
+> any employer.
